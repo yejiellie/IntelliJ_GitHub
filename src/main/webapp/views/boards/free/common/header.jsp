@@ -5,15 +5,13 @@
     body{
         font-family:"휴먼모음T";
     }
-
-    div,section,header,footer{padding:10px;}
+    /*div,section,header,footer{padding:10px;}*/
 
     div#container{
         background-color:#F0F0F0;
         width:100%;
         margin:0 auto;
     }
-
     header{
         background-color: rgba(79, 197, 115, 0.95);
         height:130px;
@@ -38,7 +36,7 @@
         text-align:center;
         padding-top:40px;
     }
-    header nav {background: #1d6403; width:100%; margin-top:40px;}
+    header nav {background: #39a45a; width:100%; margin-top:40px;}
     ul.main-nav{
         /*width:80%;*/
         display:table;
@@ -53,9 +51,9 @@
         text-align: center;
         font-family: "휴먼모음T", sans-serif;
         border-left: 1px #3cd400 solid;
-        background-color: #1d6403;
+        background-color: #39a45a;
     }
-    ul.main-nav li:last-of-type{border-right:1px rgba(0, 255, 85, 0.95) solid;;}
+    ul.main-nav li:last-of-type{border-right:1px rgba(0, 255, 85, 0.95) solid;}
     ul.main-nav li a {
         display: block;
         padding:.5em;
@@ -72,14 +70,14 @@
 <head>
     <title>JSP - Hello World</title>
 </head>
-
+<script	src="<%=request.getContextPath()%>/js/jquery-3.6.1.min.js"></script>
 <div id="container">
     <header>
-        <h1><a href="<%=request.getContextPath()%>" style="text-decoration:none; color:black;">Hello Servlet</a></h1>
+        <h1><a href="<%=request.getContextPath()%>/index.jsp" style="text-decoration:none; color:black;">Hello Servlet</a></h1>
         <nav>
             <ul class="main-nav">
-                <li class="home"><a href="<%=request.getContextPath()%>" style="text-decoration:none; color:black;">home</a></li>
-                <li id="board"><a href="<%=request.getContextPath()%>/WEB-INF/views/boards/free/list.jsp">게시판</a></li>
+                <li class="home"><a href="<%=request.getContextPath()%>/index.jsp" style="text-decoration:none; color:black;"><strong>home</strong></a></li>
+                <li id="board"><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>게시판</strong></a></li>
                 <li id="test"><a href="#">준비중입니다.</a></li>
             </ul>
         </nav>
