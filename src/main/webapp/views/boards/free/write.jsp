@@ -60,7 +60,7 @@
                     <th>카테고리<strong style="color: red">*</strong></th>
                     <td>
                         <select name="category" id="cate"  class="pl">
-                            <option selected disabled>카테고리 선택</option>
+<%--                            <option selected disabled>카테고리 선택</option>--%>
                             <% if(!clist.isEmpty()){
                                 for(Category c : clist){
                             %>

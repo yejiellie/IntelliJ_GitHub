@@ -1,14 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="com.study.vo.Board" %>
 <%@ page import="com.study.dao.BoardDao" %>
-<%@ page import="java.util.List" %>
 <%@ page import="java.io.File" %>
 <%--<%@ page import="com.oreilly.servlet.MultipartRequest" %>--%>
 <%--<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>--%>
 <%@ page import="java.util.Enumeration" %>
 <html>
 <head>
-    <title>파일업로드</title>
+    <title>게시글등록</title>
 </head>
 <body>
     <%

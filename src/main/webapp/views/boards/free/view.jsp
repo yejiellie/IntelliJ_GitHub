@@ -6,6 +6,7 @@
 <%@ page import="com.study.vo.Category" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.study.vo.BoardComment" %>
 <style>
     #insertdate {
         justify-content: flex-end;
@@ -50,7 +51,7 @@
     }
 
     #tbl-comment {
-        border-bottom: 1px solid;
+        /*border-bottom: 1px solid;*/
         padding: 10px;
         text-align: left;
         line-height: 120%;
@@ -61,8 +62,9 @@
         font-size: 10px;
     }
     .comment-editor {
-        margin-top: 10px;
-        border-bottom: 1px solid;
+        padding-top: 10px;
+        /*border-bottom: 1px solid;*/
+        /*border-top: 1px solid;*/
     }
     #filearea {
         /*border: 1px solid tomato;*/
@@ -82,13 +84,16 @@
     CategoryDao cdao=new CategoryDao();
     List<Category> clist=cdao.selectAll(); //전체 카테고리 호출
 
-    int BoardNo=Integer.parseInt(request.getParameter("boardNo"));
+    int boardNo=Integer.parseInt(request.getParameter("boardNo"));
 
     BoardDao dao=new BoardDao();
-    Board b=dao.viewDtail(BoardNo);
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    Board b=dao.viewDtail(boardNo); //게시글 상세보기
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm"); //날짜 출력방식
     String createday=formatter.format(b.getCreateDay());
-    String updateday=formatter.format(b.getUpdateDay());
+    String updateday="-";
+    if(b.getUpdateDay()!=null){
+        updateday=formatter.format(b.getUpdateDay());
+    }
 %>
 <div style="padding: 20px">
     <h2>게시판 - 보기</h2>
@@ -96,20 +101,20 @@
         <p><%=b.getWriter()%></p>
         <div id="insertdate">
             <p>등록일시 : <%=createday%></p>
-            <p>수정일시 : <%=updateday!=null?updateday:"-"%></p>
+            <p>수정일시 : <%=updateday%></p>
         </div>
     </div>
     <div id="titlecate">
         <div style="display: flex; font-weight: bold">
-            <p>
+            <p>[
             <% if(!clist.isEmpty()){
                 for(Category c : clist){
             %>
-            [<%=b.getCategory()==c.getCateNo()?c.getCateName():""%>]
+            <%=b.getCategory()==c.getCateNo()?c.getCateName():""%>
             <%
                     }
                 }
-            %>
+            %>]
             </p>
             <p style="margin-left: 20px"><%=b.getTitle()%></p>
         </div>
@@ -123,17 +128,32 @@
         (첨부파일 위치)
     </div>
 
-
+<%
+    List<BoardComment> boardComment=dao.listComment();
+%>
 <%--댓글--%>
     <section id="board-container">
         <div style="background-color: rgb(236, 234, 234)">
+            <%
+                if(!boardComment.isEmpty()){
+                    for(BoardComment bc : boardComment){
+                        if(bc.getBoardNo()==boardNo){
+                        String day=formatter.format(bc.getCommentDate());
+            %>
             <div id="tbl-comment">
-                <sub class="comment-date">날짜</sub>
-                <sub class="comment">내용</sub>
+                <sub class="comment-date"><%=day%></sub>
+                <sub class="comment"><%=bc.getContent()%></sub>
             </div>
+            <hr>
+            <%
+                        }
+                    }
+                }
+            %>
             <div class="comment-editor">
                 <form action="<%=request.getContextPath()%>/views/boards/free/insertComment.jsp" method="post" onsubmit="return insertComment();">
                     <textarea id="comment" name="comment" cols="80" rows="3" placeholder="댓글을 입력해주세요"></textarea>
+                    <input type="hidden" name="boardNo" value="<%=boardNo%>">
                     <button type="submit" id="btn-insert">등록</button>
                 </form>
             </div>
@@ -151,6 +171,7 @@
                 $("#comment").focus();
                 alert("댓글 내용을 입력해주세요");
                 return false;
+
             }
         }
     </script>

@@ -42,7 +42,7 @@ public class BoardDao {
                 b.setBoardCount(rs.getInt("BOARD_COUNT"));
                 result.add(b);
             }
-        }catch(ClassNotFoundException | SQLException e) {
+        }catch(SQLException e) {
             e.printStackTrace();
         }catch(Exception e){
             e.printStackTrace();
@@ -125,7 +125,6 @@ public class BoardDao {
         System.out.print(boardNo);
         try{
             conn=ConnectionTest.getConnection();
-//            String sql="SELECT * FROM BOARD WHERE BOARD_NO=?";
             pstmt=conn.prepareStatement("SELECT * FROM BOARD WHERE BOARD_NO=?");
             pstmt.setInt(1,boardNo);
             rs=pstmt.executeQuery();
@@ -144,7 +143,54 @@ public class BoardDao {
 
     //댓글 목록
     public List<BoardComment> listComment(){
+        Connection conn=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        List<BoardComment> list=new ArrayList();
+        try{
+            conn=ConnectionTest.getConnection();
+            pstmt=conn.prepareStatement("SELECT * FROM BOARDCOMMENT");
+            rs=pstmt.executeQuery();
+            while(rs.next()) {
+                BoardComment b = new BoardComment();
+                b.setCommentNo(rs.getInt("COMMENT_NO"));
+                b.setBoardNo(rs.getInt("BOARD_NO"));
+                b.setCommentDate(rs.getDate("COMMENT_DATE"));
+                b.setContent(rs.getString("CONTENT"));
+                list.add(b);
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+        } finally{
+            ConnectionTest.close(pstmt);
+            ConnectionTest.close(rs);
+        }
+        return list;
+    }
+    
+    //댓글 등록
+    public int inertBoardComment(BoardComment b){
+        Connection conn=null;
+        PreparedStatement pstmt=null;
+        int result=0;
+        try{
+            conn=ConnectionTest.getConnection();
+            pstmt=conn.prepareStatement("INSERT INTO BOARDCOMMENT VALUES(NULL,?,DEFAULT,?);");
+            pstmt.setInt(1,b.getBoardNo());
+            pstmt.setString(2,b.getContent());
+            result=pstmt.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            ConnectionTest.close(pstmt);
+        }
+        return result;
 
     }
+
 
 }
