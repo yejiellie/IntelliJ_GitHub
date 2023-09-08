@@ -2,6 +2,7 @@ package com.study.dao;
 
 import com.study.connection.ConnectionTest;
 import com.study.vo.Board;
+import com.study.vo.BoardComment;
 import com.study.vo.BoardFile;
 
 import java.sql.Connection;
@@ -30,6 +31,7 @@ public class BoardDao {
             rs=pstmt.executeQuery(sql);
             while(rs.next()){
                 Board b=new Board();
+                b.setBoardNo(rs.getInt("BOARD_NO"));
                 b.setCategory(rs.getInt("CATE_NO"));
                 b.setWriter(rs.getString("WRITER"));
                 b.setBoardPw(rs.getString("BOARD_PW"));
@@ -66,8 +68,8 @@ public class BoardDao {
             pstmt.setString(4,b.getTitle());
             pstmt.setString(5,b.getContent());
             result=pstmt.executeUpdate();
-            if(result>0)conn.commit();  // 트렌젝션 처리
-            else conn.rollback();
+//            if(result>0)conn.commit();  // 트렌젝션 처리
+//            else conn.rollback();
         }catch(SQLException e){
             e.printStackTrace();
         }catch(Exception e){
@@ -98,6 +100,51 @@ public class BoardDao {
             ConnectionTest.close(pstmt);
         }
         return result;
+    }
+
+    public static Board getBoard(ResultSet rs) throws SQLException{
+        return Board.builder()
+                .boardNo(rs.getInt("BOARD_NO"))
+                .category(rs.getInt("CATE_NO"))
+                .writer(rs.getString("WRITER"))
+                .boardPw(rs.getString("BOARD_PW"))
+                .title(rs.getString("TITLE"))
+                .content(rs.getString("CONTENT"))
+                .createDay(rs.getDate("CREATEDAY"))
+                .updateDay(rs.getDate("UPDATEDAY"))
+                .boardCount(rs.getInt("BOARD_COUNT"))
+                .build();
+    }
+
+    //게시글 상세보기
+    public Board viewDtail(int boardNo){
+        Connection conn=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        Board b=null;
+        System.out.print(boardNo);
+        try{
+            conn=ConnectionTest.getConnection();
+//            String sql="SELECT * FROM BOARD WHERE BOARD_NO=?";
+            pstmt=conn.prepareStatement("SELECT * FROM BOARD WHERE BOARD_NO=?");
+            pstmt.setInt(1,boardNo);
+            rs=pstmt.executeQuery();
+            if(rs.next()) b=getBoard(rs);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            ConnectionTest.close(pstmt);
+            ConnectionTest.close(rs);
+        }
+        System.out.println(b);
+        return b;
+    }
+
+    //댓글 목록
+    public List<BoardComment> listComment(){
+
     }
 
 }

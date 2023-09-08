@@ -52,7 +52,8 @@
     <h2 style="padding-bottom: 20px">게시판 - 등록</h2>
     <div id="board-container">
         <form name="enrollBoard" action="<%=request.getContextPath()%>/views/boards/free/enrollboard.jsp"
-              method="post" onsubmit="return checkinsert();" enctype="multipart/form-data">
+              method="post" onsubmit="return checkinsert();">
+<%--              enctype="multipart/form-data">--%>
                                 <%--아이디 비번 확인 용도--%>
             <table id="tbl-board">
                 <tr>

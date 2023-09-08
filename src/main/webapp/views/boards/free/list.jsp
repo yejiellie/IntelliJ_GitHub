@@ -5,7 +5,7 @@
 <%@ page import="com.study.vo.Category" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ include file="common/header.jsp" %>c
+<%@ include file="common/header.jsp" %>
 <style>
     section#board-container {
         margin: 0 auto;
@@ -129,7 +129,7 @@
             %>
             </td>
             <td><%=b.getFile()!=null?"📎":""%></td>
-            <td><a href="<%=request.getContextPath()%>/views/boards/free/view.jsp"><%=b.getTitle()%></a></td>
+            <td><a href="<%=request.getContextPath()%>/views/boards/free/view.jsp?boardNo=<%=b.getBoardNo()%>"><%=b.getTitle()%></a></td>
             <td><%=b.getWriter()%></td>
             <td><%=b.getBoardCount()%></td>
             <td><%=day%></td>
