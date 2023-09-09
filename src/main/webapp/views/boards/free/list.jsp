@@ -63,9 +63,55 @@
     List<Category> clist=cdao.selectAll(); //전체 카테고리 호출
 
     BoardDao dao=new BoardDao();
-    List<Board> list=dao.searchAll();  //전체 게시글 호출
+//    List<Board> list=dao.searchAll();  //전체 게시글 호출
+
+    //페이지바 구현하기
+    int cPage;              //현재 사용자가 보고있는 페이지
+    int numPerpage=5;       //페이지당 출력될 데이터의 갯수
+
+    try {
+        cPage=Integer.parseInt(request.getParameter("cPage"));
+    }catch(NumberFormatException e) {
+        cPage=1;
+    }
+
+    List<Board> list=dao.searchAll(cPage,numPerpage);
+
+    int totalData=dao.selectBoardCount();
+    String pageBar="";
+    int pageBarSize=5;
+    //전체 페이지 수
+    int totalPage=(int)Math.ceil((double)totalData/numPerpage);
+
+    int pageNo=((cPage-1)/pageBarSize)*pageBarSize+1;
+    int pageEnd=pageNo+pageBarSize-1;
+
+    if(pageNo==1) {
+        pageBar+="<span>[이전]</span>";
+    }else {
+        pageBar+="<a href='"+request.getContextPath()
+                +"/views/boards/free/list.jsp?cPage="+(pageNo-1)+"'> [이전] </a>";
+    }
+    while(!(pageNo>pageEnd||pageNo>totalPage)) {
+        if(cPage==pageNo) {
+            pageBar+="<span>"+pageNo+"</span>";
+        }else {
+            pageBar+="<a href='"+request.getContextPath()
+                    +"/views/boards/free/list.jsp?cPage="+pageNo+"'>"+" "+pageNo+" "+"</a>";
+        }
+        pageNo++;
+    }
+
+    if(pageNo>totalPage) {
+        pageBar+="<span>[다음]</span>";
+    }else {
+        pageBar+="<a href='"+request.getContextPath()
+                +"/views/boards/free/list.jsp?cPage="+pageNo+"'> [다음] </a>";
+    }
 
 %>
+
+
 <div style="padding: 20px;">
 <h2 style="padding-bottom: 20px">자유 게시판 - 목록</h2>
 <form action="" method="get">
@@ -98,7 +144,7 @@
         document.getElementById('beforeDate').value = new Date(now.setFullYear(now.getFullYear() - 1)).toISOString().substring(0, 10);
     </script>
 
-    <p>총 @@@건</p>
+    <p>총 <%=list.size()%>건</p>
 
 <section id="board-container">
     <table id="tbl-board">
@@ -114,33 +160,45 @@
         <%
             if(!list.isEmpty()) {
                 for(Board b : list){
+                    //날짜 형식을 바꿔줌
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                    String day=formatter.format(b.getCreateDay());
+                    String createday=formatter.format(b.getCreateDay());
+                    String updateday="-";
+                    if(b.getUpdateDay()!=null){
+                        updateday=formatter.format(b.getUpdateDay());
+                    }
+                    String title="";
+                    //제목이 80자가 넘는경우 ...으로 대체지만 너무 길어서 30자로 대체
+                    if(b.getTitle().length()>=30) {
+                        title = b.getTitle().substring(0, 30).concat("...");
+//                        System.out.println(title);
+                    }
         %>
         <tr id="tableinfo">
             <td>
             <% if(!clist.isEmpty()){
                 for(Category c : clist){
             %>
-            <%=b.getCategory()==c.getCateNo()?c.getCateName():""%>
+            <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
             <%
                     }
                 }
             %>
             </td>
             <td><%=b.getFile()!=null?"📎":""%></td>
-            <td><a href="<%=request.getContextPath()%>/views/boards/free/view.jsp?boardNo=<%=b.getBoardNo()%>"><%=b.getTitle()%></a></td>
+            <td><a href="<%=request.getContextPath()%>/views/boards/free/view.jsp?boardNo=<%=b.getBoardNo()%>"><%=title==""?b.getTitle():title%></a></td>
             <td><%=b.getWriter()%></td>
             <td><%=b.getBoardCount()%></td>
-            <td><%=day%></td>
-            <td><%=b.getUpdateDay()!=null?b.getUpdateDay():"-"%></td>
+            <td><%=createday%></td>
+            <td><%=b.getUpdateDay()!=null?updateday:"-"%></td>
         </tr>
         <%
                 }
             }
         %>
     </table>
-    <div id="pageBar">페이지바</div>
+
+    <div id="pageBar"><%=pageBar%></div>
     <div style="float: right; padding: 50px">
         <input type="button" onclick="insertbaord();" value="등록" style="width: 90px" />
     </div>

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +13,6 @@ import java.util.Date;
 public class BoardComment {
     private int commentNo;
     private int boardNo;
-    private Date commentDate;
+    private Timestamp commentDate;
     private String content;
 }

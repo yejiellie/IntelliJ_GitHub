@@ -5,6 +5,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.study.vo.Category" %>
 <%@ include file="common/header.jsp" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <style>
     #tbl-board {
         width: 100%;
@@ -19,9 +20,6 @@
         border-bottom: 1px solid;
         border-top: 1px solid;
         padding: 5px 0 5px 10px;
-    }
-    .pl {
-        width: 208px;
     }
     #filearea {
         display: flex;
@@ -43,90 +41,74 @@
     CategoryDao cdao=new CategoryDao();
     List<Category> clist=cdao.selectAll(); //전체 카테고리 호출
 
+    int boardNo=Integer.parseInt(request.getParameter("boardNo"));
+    BoardDao dao=new BoardDao();
+    Board b=dao.viewDtail(boardNo); //내용
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    String createday=formatter.format(b.getCreateDay());
+    String updateday="-";
+    if(b.getUpdateDay()!=null){
+        updateday=formatter.format(b.getUpdateDay());
+    }
 %>
 
 <div style="padding: 20px">
-    <h2 style="padding-bottom: 20px">게시판 - 등록</h2>
+    <h2 style="padding-bottom: 20px">게시판 - 수정</h2>
     <div id="board-container">
-        <form name="enrollBoard" action="<%=request.getContextPath()%>/views/boards/free/enrollboard.jsp"
+        <form name="enrollBoard" action="<%=request.getContextPath()%>/views/boards/free/updateBoard.jsp"
               method="post" onsubmit="return checkinsert();">
-<%--              enctype="multipart/form-data">--%>
-                                <%--아이디 비번 확인 용도--%>
             <table id="tbl-board">
                 <tr>
-                    <th>카테고리<strong style="color: red">*</strong></th>
+                    <th>카테고리</th>
                     <td>
-                        <select name="category" id="cate"  class="pl">
-<%--                            <option selected disabled>카테고리 선택</option>--%>
-                            <% if(!clist.isEmpty()){
-                                for(Category c : clist){
-                            %>
-                            <option value="<%=c.getCateNo()%>"><%=c.getCateName()%></option>
-                            <%
-                                    }
+                        <% if(!clist.isEmpty()){
+                            for(Category c : clist){
+                        %>
+                        <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
+                        <%
                                 }
-                            %>
-                        </select>
+                            }
+                        %>
+                        <input type="hidden" name="boardNo" value="<%=boardNo%>">
+                    </td>
+                </tr>
+                <tr>
+                    <th>등록일시</th>
+                    <td><input type="text" value="<%=createday%>" readonly style="width: 200px;border: none;outline: none;" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>수정일시</th>
+                    <td><input type="text" value="<%=updateday%>" readonly style="width: 200px;border: none;outline: none;" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>조회수</th>
+                    <td><input type="text" value="<%=b.getBoardCount()%>" readonly style="width: 200px;border: none;outline: none;" />
                     </td>
                 </tr>
                 <tr>
                     <th>작성자<strong style="color: red">*</strong></th>
-                    <td><input type="text" name="writer" id="writer" style="width: 200px" required/>
-                        <div>
-                            <span id="lengthCheck"></span>
-                        </div>
+                    <td><input type="text" name="writer" id="writer" value="<%=b.getWriter()%>" style="width: 200px" required/>
                     </td>
                 </tr>
                 <tr>
                     <th>비밀번호<strong style="color: red">*</strong></th>
                     <td>
                         <input type="text" name="boardpw" placeholder="비밀번호" id="boardpw" style="width: 200px" required/>
-                        <input type="text" placeholder="비밀번호 확인" id="boardrwcheck" style="width: 200px"/>
-                        <div style="width: 300px" >
-                            <span id="pwresult"></span>
-                        </div>
                     </td>
                 </tr>
-                <script>
-                    //작성자 글자 3글자 이상, 5글자 미만
-                    // $(()=>{
-                    //     const writer = $("#writer").val();
-                    //     if (writer.trim().length < 3 || writer.trim().length>=5) {
-                    //         $("#lengthCheck").css("color","red").text("작성자명은 3글자 이상, 5글자 미만으로 입력해야 합니다!");
-                    //         $("#writer").val('');
-                    //         $("#writer").focus();
-                    //     }else{
-                    //         $("#lengthCheck").text("");
-                    //     }
-                    // });
-
-                    //비밀번호 중복확인
-                    $(()=>{
-                        $("#boardrwcheck").blur(e=>{
-                            const pw=$("#boardpw").val();
-                            const pwck=$(e.target).val();
-                            if(pw!=null){
-                                if(pw==pwck){
-                                    $("#pwresult").css("color","green").text("비밀번호가 일치합니다.");
-                                }else{
-                                    $("#pwresult").css("color","red").text("비밀번호가 일치하지 않습니다.");
-                                }
-                            }
-                        });
-                    });
-                </script>
 
                 <tr>
                     <th>제목<strong style="color: red">*</strong></th>
-                    <td><input name="title" type="text" style="width: 95%" required/></td>
+                    <td><input name="title" type="text" value="<%=b.getTitle()%>" style="width: 95%" required/></td>
                 </tr>
                 <tr>
                     <th>내용<strong style="color: red">*</strong></th>
                     <td>
-                        <textarea name="content" id="" rows="10" style="width: 95%" required></textarea>
+                        <textarea name="content" id="" rows="10" style="width: 95%" required><%=b.getContent()%></textarea>
                     </td>
                 </tr>
-
                 <tr>
                     <th>첨부파일</th>
                     <td>
@@ -158,7 +140,7 @@
             const passwordcheck=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{4,16}$/;
             if(!passwordcheck.test(pw)){
                 alert("비밀번호는 영문, 숫자, 특수문자를 포함하고 글자 이상, 16글자 미만이어야 합니다.");
-                    return false;
+                return false;
             }
         }
     </script>

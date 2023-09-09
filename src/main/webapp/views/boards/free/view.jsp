@@ -76,8 +76,8 @@
         margin: 20px;
     }
     #readcount {
-        font-size: 5px;
-        white-space: break-spaces;
+        font-size: 13px;
+        /*white-space: break-spaces;*/
     }
 </style>
 <%
@@ -110,7 +110,7 @@
             <% if(!clist.isEmpty()){
                 for(Category c : clist){
             %>
-            <%=b.getCategory()==c.getCateNo()?c.getCateName():""%>
+            <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
             <%
                     }
                 }
@@ -160,8 +160,8 @@
         </div>
         <div id="totalbtn">
             <button onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/list.jsp')">목록</button>
-            <button>수정</button>
-            <button>삭제</button>
+            <button onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/modify.jsp?boardNo='+<%=boardNo%>)">수정</button>
+            <button onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/deleteBoard.jsp?boardNo='+<%=boardNo%>)">삭제</button>
         </div>
     </section>
     <script>
@@ -171,7 +171,6 @@
                 $("#comment").focus();
                 alert("댓글 내용을 입력해주세요");
                 return false;
-
             }
         }
     </script>

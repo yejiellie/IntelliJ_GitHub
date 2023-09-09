@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -13,15 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Board {
-    private int boardNo;
-    private int category;
-    private String writer;
-    private String boardPw;
-    private String title;
-    private String content;
-    private Date createDay;
-    private Date updateDay;
-    private int boardCount;
+    private int boardNo;        //게시글 번호
+    private int cateNo;         //카테고리 번호
+    private String writer;      //작성자명
+    private String boardPw;     //게시글비밀번호
+    private String title;       //제목
+    private String content;     //내용
+    private Timestamp createDay;//작성일
+    private Timestamp updateDay;//최종 수정일
+    private int boardCount;     //조회수
 
     private List<BoardFile> file;
 

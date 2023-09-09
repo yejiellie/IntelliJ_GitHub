@@ -53,10 +53,10 @@
         border-left: 1px #3cd400 solid;
         background-color: #39a45a;
     }
-    ul.main-nav li:last-of-type{border-right:1px rgba(0, 255, 85, 0.95) solid;}
+    ul.main-nav li:last-of-type{border-right:1px #3cd400 solid;}
     ul.main-nav li a {
         display: block;
-        padding:.5em;
+        padding: 5px;
         text-decoration: none;
         color: #292929;
     }
@@ -65,6 +65,9 @@
     }
     ul.main-nav li:hover > a{
         color:#FFF; /* 글자색*/
+    }
+    a {
+        text-decoration: none;
     }
 </style>
 <head>

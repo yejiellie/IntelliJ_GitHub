@@ -32,7 +32,7 @@
         String content=request.getParameter("content");
 
         Board b=Board.builder()
-                .category(category)
+                .cateNo(category)
                 .writer(writer)
                 .boardPw(pw)
                 .title(title)
@@ -41,8 +41,14 @@
 
         int result=new BoardDao().insertBoard(b);
         if(result>0) {
-            response.sendRedirect("list.jsp");
+            out.println("<script>alert('게시글이 등록되었습니다.');location.href='/views/boards/free/list.jsp';</script>");
+        }else{
+    %>
+    <script>
+        alert("게시물 등록에 실패했습니다!");
+    </script>
+    <%
         }
-        %>
+    %>
 </body>
 </html>
