@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class BoardComment {
-    private int commentNo;
-    private int boardNo;
-    private Timestamp commentDate;
-    private String content;
+    private int commentNo;          //댓글 번호
+    private int boardNo;            //게시글 번호 (Board테이블을 참조받음)
+    private Timestamp commentDate;  //댓글 작성일
+    private String content;         //댓글 내용
 }

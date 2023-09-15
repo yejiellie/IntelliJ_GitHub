@@ -18,23 +18,33 @@ public class BoardDao {
     public BoardDao(){}
 
     //게시판 전체 조회
-    public List<Board> searchAll(int cPage, int numPerpage){
-        Connection conn=null;
-        PreparedStatement pstmt=null;
-        ResultSet rs=null;
-        List<Board> result=new ArrayList();
+
+    /**
+     * 게시물 목록 조회
+     * @param cPage 현재페이지 번호
+     * @param numPerpage 한 페이지당 보여줄 게시물 수
+     * @return 조회된 게시물 목록
+     */
+    public List<Board> searchAll(int cPage, int numPerpage) {
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        List<Board> result = new ArrayList();
         try{
-            conn=ConnectionTest.getConnection();
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ebrain_study","ebsoft","ebsoft");
-            String sql="SELECT * FROM BOARD ORDER BY BOARD_NO ASC LIMIT ?,?";
-            pstmt=conn.prepareStatement(sql);
+            conn = ConnectionTest.getConnection();
+
+            String sql = "SELECT * FROM board ORDER BY board_no ASC LIMIT ?,?";
+            pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1,(cPage-1)*numPerpage+1);
             pstmt.setInt(2,cPage*numPerpage);
-            rs=pstmt.executeQuery();
+            rs = pstmt.executeQuery();
+
             while(rs.next()) {
                 result.add(getBoard(rs));
             }
+
         }catch(SQLException e) {
             e.printStackTrace();
         }catch(Exception e){
@@ -46,6 +56,10 @@ public class BoardDao {
         return result;
     }
 
+    /**
+     * 
+     * @return 게시글 갯수반환
+     */
     //페이지바
     public int selectBoardCount() {
         Connection conn=null;
@@ -92,8 +106,31 @@ public class BoardDao {
         return result;
     }
 
-    ///////////////////////////파일 업로드.......
-    public int upload(BoardFile b){
+    // 게시글 등록 후 시퀀스 값을 가져오려고 하는데....
+    public int newKeyValue(){
+        Connection conn=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        int count=0;
+        try {
+            conn=ConnectionTest.getConnection();
+            pstmt=conn.prepareStatement("SELECT MAX(board_no) FROM  board;");
+            rs=pstmt.executeQuery();
+            if(rs.next()) count=rs.getInt(1);
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            close(rs);
+            close(pstmt);
+        }
+        return count;
+    }
+
+
+    ///////////////////////////파일 업로드
+    public int upload(BoardFile b,int boardNo){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
@@ -101,7 +138,7 @@ public class BoardDao {
             conn=ConnectionTest.getConnection();
             String sql="INSERT INTO BOARDFILE VALUES(NULL,?,?,?)";
             pstmt=conn.prepareStatement(sql);
-            pstmt.setInt(1,b.getBoardNo());
+            pstmt.setInt(1,boardNo);
             pstmt.setString(2,b.getOriName());
             pstmt.setString(3,b.getNewName());
             result=pstmt.executeUpdate();
@@ -123,8 +160,6 @@ public class BoardDao {
                 .boardPw(rs.getString("BOARD_PW"))
                 .title(rs.getString("TITLE"))
                 .content(rs.getString("CONTENT"))
-//                .createDay(rs.getDate("CREATEDAY"))
-//                .updateDay(rs.getDate("UPDATEDAY"))
                 .createDay(rs.getTimestamp("CREATEDAY"))
                 .updateDay(rs.getTimestamp("UPDATEDAY"))
                 .boardCount(rs.getInt("BOARD_COUNT"))
@@ -132,14 +167,14 @@ public class BoardDao {
     }
 
     //게시글 상세보기
-    public Board viewDtail(int boardNo){
+    public Board viewDetail(int boardNo){
         Connection conn=null;
         PreparedStatement pstmt=null;
         ResultSet rs=null;
         Board b=null;
         try{
             conn=ConnectionTest.getConnection();
-            updatReadCount(boardNo);
+            updateReadCount(boardNo);
             pstmt=conn.prepareStatement("SELECT * FROM BOARD WHERE BOARD_NO=?");
             pstmt.setInt(1,boardNo);
             rs=pstmt.executeQuery();
@@ -181,7 +216,7 @@ public class BoardDao {
     }
 
     //게시글 조회수
-    public int updatReadCount(int boardNo){
+    public int updateReadCount(int boardNo){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
@@ -196,7 +231,8 @@ public class BoardDao {
             e.printStackTrace();
         }finally {
             close(pstmt);
-        }return result;
+        }
+        return result;
     }
 
     //게시글 삭제
@@ -266,8 +302,5 @@ public class BoardDao {
             ConnectionTest.close(pstmt);
         }
         return result;
-
     }
-
-
 }

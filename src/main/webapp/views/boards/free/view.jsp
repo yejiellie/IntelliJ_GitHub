@@ -24,8 +24,10 @@
     }
     #titlecate {
         display: flex;
-        justify-content: space-between;
-        height: 40px;
+        /*justify-content: space-between;*/
+        height: auto;
+        padding-top: 20px;
+        /*padding-bottom: 10px;*/
     }
     #totalbtn > button {
         width: 90px;
@@ -87,7 +89,7 @@
     int boardNo=Integer.parseInt(request.getParameter("boardNo"));
 
     BoardDao dao=new BoardDao();
-    Board b=dao.viewDtail(boardNo); //게시글 상세보기
+    Board b=dao.viewDetail(boardNo); //게시글 상세보기
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm"); //날짜 출력방식
     String createday=formatter.format(b.getCreateDay());
     String updateday="-";
@@ -104,22 +106,23 @@
             <p>수정일시 : <%=updateday%></p>
         </div>
     </div>
-    <div id="titlecate">
-        <div style="display: flex; font-weight: bold">
-            <p>[
-            <% if(!clist.isEmpty()){
-                for(Category c : clist){
-            %>
-            <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
-            <%
-                    }
+    <div id="titlecate" style="display: flex; font-weight: bold">
+        <div style="width: 10%">
+        [
+        <% if(!clist.isEmpty()){
+            for(Category c : clist){
+        %>
+        <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
+        <%
                 }
-            %>]
-            </p>
-            <p style="margin-left: 20px"><%=b.getTitle()%></p>
+            }
+        %>]
         </div>
-        <div id="readcount">
-            <p>조회수 : <%=b.getBoardCount()%></p>
+        <div style="width: 80%">
+            <%=b.getTitle()%>
+        </div>
+        <div style="width: 10%; text-align: right;margin-top: 1%;" id="readcount">
+            조회수 : <%=b.getBoardCount()%>
         </div>
     </div>
     <hr class="my-hr" />
@@ -160,11 +163,16 @@
         </div>
         <div id="totalbtn">
             <button onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/list.jsp')">목록</button>
-            <button onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/modify.jsp?boardNo='+<%=boardNo%>)">수정</button>
+            <button onclick="updateBoard()">수정</button>
             <button onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/deleteBoard.jsp?boardNo='+<%=boardNo%>)">삭제</button>
         </div>
+<%--        <form name="checkPass">--%>
+<%--            <input type="hidden" value="<%=b.getBoardPw()%>" id="password" name="password">--%>
+<%--            <input type="hidden" value="<%=boardNo%>" id="boardNo" name="boardNo">--%>
+<%--        </form>--%>
     </section>
     <script>
+        //댓글 내용 체크
         const insertComment=()=>{
             if($("#comment").val().trim()==""){
                 $("#comment").val('');
@@ -172,6 +180,13 @@
                 alert("댓글 내용을 입력해주세요");
                 return false;
             }
+        }
+        //수정하기
+        const updateBoard=()=>{
+            // const password=$("#password").val();
+            const no=$("#boardNo").val();
+            open("<%=request.getContextPath()%>/views/boards/free/common/checkPassword.jsp?boardNo=<%=boardNo%>",
+                "_blank","width=500,height=250");
         }
     </script>
 </div>

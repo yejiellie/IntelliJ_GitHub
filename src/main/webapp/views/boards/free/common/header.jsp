@@ -80,8 +80,8 @@
         <nav>
             <ul class="main-nav">
                 <li class="home"><a href="<%=request.getContextPath()%>/index.jsp" style="text-decoration:none; color:black;"><strong>home</strong></a></li>
-                <li id="board"><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>게시판</strong></a></li>
-                <li id="test"><a href="#">준비중입니다.</a></li>
+                <li><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>jsp게시판</strong></a></li>
+                <li><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>Servlet게시판</strong></a></li>
             </ul>
         </nav>
     </header>

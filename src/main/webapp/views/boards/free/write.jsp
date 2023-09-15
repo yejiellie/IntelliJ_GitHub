@@ -49,9 +49,9 @@
     <h2 style="padding-bottom: 20px">게시판 - 등록</h2>
     <div id="board-container">
         <form name="enrollBoard" action="<%=request.getContextPath()%>/views/boards/free/enrollboard.jsp"
-              method="post" onsubmit="return checkinsert();">
-<%--              enctype="multipart/form-data">--%>
+              method="post" onsubmit="return checkinsert();"
                                 <%--아이디 비번 확인 용도--%>
+              enctype="multipart/form-data">
             <table id="tbl-board">
                 <tr>
                     <th>카테고리<strong style="color: red">*</strong></th>
@@ -80,7 +80,7 @@
                 <tr>
                     <th>비밀번호<strong style="color: red">*</strong></th>
                     <td>
-                        <input type="text" name="boardpw" placeholder="비밀번호" id="boardpw" style="width: 200px" required/>
+                        <input type="text" name="boardPw" placeholder="비밀번호" id="boardPw" style="width: 200px" required/>
                         <input type="text" placeholder="비밀번호 확인" id="boardrwcheck" style="width: 200px"/>
                         <div style="width: 300px" >
                             <span id="pwresult"></span>
@@ -103,9 +103,9 @@
                     //비밀번호 중복확인
                     $(()=>{
                         $("#boardrwcheck").blur(e=>{
-                            const pw=$("#boardpw").val();
+                            const pw=$("#boardPw").val();
                             const pwck=$(e.target).val();
-                            if(pw!=null){
+                            if(pw!=null || pw!=""){
                                 if(pw==pwck){
                                     $("#pwresult").css("color","green").text("비밀번호가 일치합니다.");
                                 }else{
@@ -118,12 +118,12 @@
 
                 <tr>
                     <th>제목<strong style="color: red">*</strong></th>
-                    <td><input name="title" type="text" style="width: 95%" required/></td>
+                    <td><input name="title" type="text" pattern=".{4,100}" title="4글자 이상,100글자 미만으로 입력해주세요" style="width: 95%" required/></td>
                 </tr>
                 <tr>
                     <th>내용<strong style="color: red">*</strong></th>
                     <td>
-                        <textarea name="content" id="" rows="10" style="width: 95%" required></textarea>
+                        <textarea name="content" id="" rows="10" minlength="4" maxlength="2000" pattern=".{4,2000}" title="4글자 이상,2000글자 미만으로 입력해주세요" style="width: 95%" required></textarea>
                     </td>
                 </tr>
 
@@ -131,9 +131,9 @@
                     <th>첨부파일</th>
                     <td>
                         <div id="filearea">
-                            <input type="file" name="file1" />
-                            <input type="file" name="file2"/>
-                            <input type="file" name="file3"/>
+                            <input class="" type="file" name="boardFile" id="boardFile1" value="">
+                            <input class="" type="file" name="boardFile" id="boardFile2" value="">
+                            <input class="" type="file" name="boardFile" id="boardFile3" value="">
                         </div>
                     </td>
                 </tr>
@@ -147,7 +147,7 @@
     <script>
         const checkinsert=()=>{
             const writer=$("#writer").val().trim();
-            const pw=$("#boardpw").val().trim();
+            const pw=$("#boardPw").val().trim();
             //작성자 글자 3글자 이상, 5글자 미만
             if(writer.length<3 || writer.length >=5){
                 alert("작성자명은 3글자 이상, 5글자 미만으로 입력해야 합니다!");

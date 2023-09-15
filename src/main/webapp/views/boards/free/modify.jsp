@@ -95,7 +95,7 @@
                 <tr>
                     <th>비밀번호<strong style="color: red">*</strong></th>
                     <td>
-                        <input type="text" name="boardpw" placeholder="비밀번호" id="boardpw" style="width: 200px" required/>
+                        <input type="text" name="boardPw" placeholder="비밀번호" id="boardPw" style="width: 200px" required/>
                     </td>
                 </tr>
 
@@ -106,7 +106,7 @@
                 <tr>
                     <th>내용<strong style="color: red">*</strong></th>
                     <td>
-                        <textarea name="content" id="" rows="10" style="width: 95%" required><%=b.getContent()%></textarea>
+                        <textarea name="content" id="" rows="10" minlength="4" maxlength="2000" style="width: 95%" required><%=b.getContent()%></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -121,7 +121,7 @@
                 </tr>
             </table>
             <div id="btn">
-                <input type="button" value="취소" onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/list.jsp')"/>
+                <input type="button" value="취소" onclick="location.assign('<%=request.getContextPath()%>/views/boards/free/view.jsp?boardNo='+<%=boardNo%>)"/>
                 <input type="submit" value="저장" />
             </div>
         </form>
@@ -129,7 +129,7 @@
     <script>
         const checkinsert=()=>{
             const writer=$("#writer").val().trim();
-            const pw=$("#boardpw").val().trim();
+            const pw=$("#boardPw").val().trim();
             //작성자 글자 3글자 이상, 5글자 미만
             if(writer.length<3 || writer.length >=5){
                 alert("작성자명은 3글자 이상, 5글자 미만으로 입력해야 합니다!");

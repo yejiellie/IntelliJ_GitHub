@@ -11,14 +11,14 @@
     //첨부파일은 나중에 다시 시도하기!!!!
     int boardNo=Integer.parseInt(request.getParameter("boardNo"));
     String writer=request.getParameter("writer");
-    String pw=request.getParameter("boardpw");
+    String boardPw=request.getParameter("boardPw");
     String title=request.getParameter("title");
     String content=request.getParameter("content");
 
     Board b=Board.builder()
             .boardNo(boardNo)
             .writer(writer)
-            .boardPw(pw)
+            .boardPw(boardPw)
             .title(title)
             .content(content)
             .build();

@@ -113,28 +113,28 @@
 
 
 <div style="padding: 20px;">
-<h2 style="padding-bottom: 20px">자유 게시판 - 목록</h2>
-<form action="<%=request.getContextPath()%>/views/boards/free/searchInfo.jsp" method="get">
-    <div id="searchdata">
-        등록일 <input type="date" id="beforeDate" />~<input type="date" id="currentDate"/>
-        <div id="totalsearch">
-            <select name="likeLanguage" id="" class="pl">
-                <option selected disabled>카테고리 선택</option>
-                <%--카테고리 전체 내용을 출력 --%>
-                <% if(!clist.isEmpty()){
-                    for(Category c : clist){
-                %>
-                <option value="<%=c.getCateNo()%>"><%=c.getCateName()%></option>
-                <%
+    <h2 style="padding-bottom: 20px">자유 게시판 - 목록</h2>
+    <form action="<%=request.getContextPath()%>/views/boards/free/searchInfo.jsp" method="get">
+        <div id="searchdata">
+            등록일 <input type="date" id="beforeDate" />~<input type="date" id="currentDate"/>
+            <div id="totalsearch">
+                <select name="likeLanguage" id="" class="pl">
+                    <option selected disabled>카테고리 선택</option>
+                    <%--카테고리 전체 내용을 출력 --%>
+                    <% if(!clist.isEmpty()){
+                        for(Category c : clist){
+                    %>
+                    <option value="<%=c.getCateNo()%>"><%=c.getCateName()%></option>
+                    <%
+                            }
                         }
-                    }
-                %>
-            </select>
-            <input type="text" id="searchbox" placeholder="검색어를 입력해주세요.(제목+작성자+내용)"/>
-            <input type="submit" id="btn-search" value="검색" />
+                    %>
+                </select>
+                <input type="text" id="searchbox" placeholder="검색어를 입력해주세요.(제목+작성자+내용)"/>
+                <input type="submit" id="btn-search" value="검색" />
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 
     <script>
         //현재 날짜 디폴트값
@@ -146,66 +146,66 @@
 
     <p>총 <%=totalData%>건</p>
 
-<section id="board-container">
-    <table id="tbl-board">
-        <tr>
-            <th>카테고리</th>
-            <th></th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>조회수</th>
-            <th>등록일시</th>
-            <th>수정일시</th>
-        </tr>
-        <%
-            if(!list.isEmpty()) {
-                for(Board b : list){
-                    //날짜 형식을 바꿔줌
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                    String createday=formatter.format(b.getCreateDay());
-                    String updateday="-";
-                    if(b.getUpdateDay()!=null){
-                        updateday=formatter.format(b.getUpdateDay());
-                    }
-                    String title="";
-                    //제목이 80자가 넘는경우 ...으로 대체지만 너무 길어서 30자로 대체
-                    if(b.getTitle().length()>=30) {
-                        title = b.getTitle().substring(0, 30).concat("...");
-                    }
-        %>
-        <tr id="tableinfo">
-            <td>
-            <% if(!clist.isEmpty()){
-                for(Category c : clist){
+    <section id="board-container">
+        <table id="tbl-board">
+            <tr>
+                <th>카테고리</th>
+                <th></th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>등록일시</th>
+                <th>수정일시</th>
+            </tr>
+            <%
+                if(!list.isEmpty()) {
+                    for(Board b : list){
+                        //날짜 형식을 바꿔줌
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                        String createday=formatter.format(b.getCreateDay());
+                        String updateday="-";
+                        if(b.getUpdateDay()!=null){
+                            updateday=formatter.format(b.getUpdateDay());
+                        }
+                        String title="";
+                        //제목이 80자가 넘는경우 ...으로 대체지만 너무 길어서 30자로 대체
+                        if(b.getTitle().length()>=30) {
+                            title = b.getTitle().substring(0, 30).concat("...");
+                        }
             %>
-            <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
+            <tr id="tableinfo">
+                <td>
+                    <% if(!clist.isEmpty()){
+                        for(Category c : clist){
+                    %>
+                    <%=b.getCateNo()==c.getCateNo()?c.getCateName():""%>
+                    <%
+                            }
+                        }
+                    %>
+                </td>
+                <td><%=b.getFile()!=null?"📎":""%></td>
+                <td><a href="<%=request.getContextPath()%>/views/boards/free/view.jsp?boardNo=<%=b.getBoardNo()%>"><%=title==""?b.getTitle():title%></a></td>
+                <td><%=b.getWriter()%></td>
+                <td><%=b.getBoardCount()%></td>
+                <td><%=createday%></td>
+                <td><%=b.getUpdateDay()!=null?updateday:"-"%></td>
+            </tr>
             <%
                     }
                 }
             %>
-            </td>
-            <td><%=b.getFile()!=null?"📎":""%></td>
-            <td><a href="<%=request.getContextPath()%>/views/boards/free/view.jsp?boardNo=<%=b.getBoardNo()%>"><%=title==""?b.getTitle():title%></a></td>
-            <td><%=b.getWriter()%></td>
-            <td><%=b.getBoardCount()%></td>
-            <td><%=createday%></td>
-            <td><%=b.getUpdateDay()!=null?updateday:"-"%></td>
-        </tr>
-        <%
-                }
-            }
-        %>
-    </table>
+        </table>
 
-    <div id="pageBar"><%=pageBar%></div>
-    <div style="float: right; padding: 50px">
-        <input type="button" onclick="insertbaord();" value="등록" style="width: 90px" />
-    </div>
-    <script>
-        const insertbaord=()=>{
-            location.href="<%=request.getContextPath()%>/views/boards/free/write.jsp";
-        }
-    </script>
-</section>
+        <div id="pageBar"><%=pageBar%></div>
+        <div style="float: right; padding: 50px">
+            <input type="button" onclick="insertbaord();" value="등록" style="width: 90px" />
+        </div>
+        <script>
+            const insertbaord=()=>{
+                location.href="<%=request.getContextPath()%>/views/boards/free/write.jsp";
+            }
+        </script>
+    </section>
 </div>
 <%@ include file="common/footer.jsp" %>
