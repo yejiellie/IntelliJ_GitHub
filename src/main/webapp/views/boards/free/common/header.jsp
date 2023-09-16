@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html>
 <style>
@@ -81,7 +83,7 @@
             <ul class="main-nav">
                 <li class="home"><a href="<%=request.getContextPath()%>/index.jsp" style="text-decoration:none; color:black;"><strong>home</strong></a></li>
                 <li><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>jsp게시판</strong></a></li>
-                <li><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>Servlet게시판</strong></a></li>
+                <li><a href="${path}/board/BoardList.do"><strong>Servlet게시판</strong></a></li>
             </ul>
         </nav>
     </header>

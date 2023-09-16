@@ -1,12 +1,11 @@
 package com.study.common;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/*")
+//@WebFilter(urlPatterns = "/*")
 public class EncryptFilter extends HttpFilter implements Filter {
 
     public EncryptFilter() {
