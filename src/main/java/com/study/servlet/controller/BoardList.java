@@ -69,7 +69,6 @@ public class BoardList extends HttpServlet {
                     +"/board/BoardList.do?cPage="+pageNo+"'> [다음] </a>";
         }
 
-        System.out.println(list);
         req.setAttribute("totalData",totalData);        //총 게시글수
         req.setAttribute("categoryList",categoryList);  //카테고리
         req.setAttribute("list",list);                  //모든 게시글

@@ -34,11 +34,55 @@
     <select id="categoryAll" resultMap="categoryMap">
         SELECT * FROM category;
     </select>
-
+    <!--  카테고리 매칭해줌  -->
     <resultMap id="categoryMap" type="category">
         <id property="cateNo" column="CATE_NO"/>
         <result property="cateName" column="CATE_NAME"/>
     </resultMap>
 
+    <!-- 게시글 입력   -->
+    <insert id="insertBoard" parameterType="board">
+        INSERT INTO board VALUES(NULL,#{cateNo},#{writer},#{boardPw},#{title},#{content},DEFAULT,NULL,DEFAULT);
+        <selectKey keyProperty="boardNo" resultType="_int" order="AFTER">
+            SELECT MAX(board_no) FROM  board;
+        </selectKey>
+    </insert>
+
+    <!--  게시글 상세보기  -->
+    <select id="viewDetail" resultMap="boardMap">
+        SELECT * FROM board WHERE board_no=#{boardNo}
+    </select>
+
+    <!--  조회수 증가  -->
+    <update id="updateReadCount" parameterType="_int">
+        UPDATE board SET board_count=board_count+1 WHERE board_no=#{boardNo}
+    </update>
+
+    <!--  게시글 삭제  -->
+    <delete id="deleteBoard" parameterType="_int">
+        DELETE FROM board WHERE board_no=#{boardNo}
+    </delete>
+
+    <!--  게시글 수정  -->
+    <update id="updateBoard" parameterType="board">
+        UPDATE BOARD SET writer=#{writer},board_pw=#{boardPw},title=#{title},content=#{content},updateday=NOW() WHERE board_no=#{boardNo}
+    </update>
+
+<!--   댓글    -->
+    <!--  댓글조회  -->
+    <select id="listComment" resultMap="commentMap">
+        SELECT * FROM boardcomment
+    </select>
+    
+    <resultMap id="commentMap" type="comment">
+        <id property="commentNo" column="COMMENT_NO"/>
+        <result property="boardNo" column="BOARD_NO"/>
+        <result property="commentDate" column="COMMENT_DATE"/>
+        <result property="content" column="CONTENT"/>
+    </resultMap>
+
+    <insert id="inertBoardComment" parameterType="comment">
+        INSERT INTO boardcomment VALUES(NULL,#{boardNo},DEFAULT,#{content});
+    </insert>
 
 </mapper>

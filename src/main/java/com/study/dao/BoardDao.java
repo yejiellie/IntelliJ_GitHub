@@ -84,7 +84,7 @@ public class BoardDao {
      * 
      *게시글 등록
      * @param b 게시글의 정보를 builder에 담음
-     * @return 성공시 1반환 실패시 0 반환
+     * @return 성공시 1반환 
      */
     public int insertBoard(Board b){
         Connection conn=null;
@@ -92,7 +92,7 @@ public class BoardDao {
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="INSERT INTO baord VALUES(NULL,?,?,?,?,?,DEFAULT,NULL,DEFAULT);";
+            String sql="INSERT INTO board VALUES(NULL,?,?,?,?,?,DEFAULT,NULL,DEFAULT);";
             pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,b.getCateNo());
             pstmt.setString(2,b.getWriter());
@@ -139,7 +139,7 @@ public class BoardDao {
      *
      * @param b 파일 정보
      * @param boardNo 게시글 번호
-     * @return 성공시 1, 실패시 0 반환
+     * @return 성공시 1 반환
      */
     public int upload(BoardFile b,int boardNo){
         Connection conn=null;
@@ -147,7 +147,7 @@ public class BoardDao {
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="INSERT INTO baordfile VALUES(NULL,?,?,?)";
+            String sql="INSERT INTO boardfile VALUES(NULL,?,?,?)";
             pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,boardNo);
             pstmt.setString(2,b.getOriName());
@@ -213,7 +213,7 @@ public class BoardDao {
     /**
      * 게시글 수정하기
      * @param b 게시글 정보
-     * @return 성공시 1, 실패시 0
+     * @return 성공시 1 반환
      */
     public int updateBoard(Board b){
         Connection conn=null;
@@ -221,7 +221,7 @@ public class BoardDao {
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="UPDATE BOARD SET writer=?,board_pw=?,title=?,content=?,updateday=NOW() WHERE baord_no=?;";
+            String sql="UPDATE BOARD SET writer=?,board_pw=?,title=?,content=?,updateday=NOW() WHERE board_no=?;";
             pstmt=conn.prepareStatement(sql);
             pstmt.setString(1,b.getWriter());
             pstmt.setString(2,b.getBoardPw());
@@ -242,7 +242,7 @@ public class BoardDao {
     /**
      * 게시글 조회수
      * @param boardNo 게시글 번호
-     * @return 성공시 1, 실패시 0 반화
+     * @return 성공시 1 반환
      */
     public int updateReadCount(int boardNo){
         Connection conn=null;
@@ -266,7 +266,7 @@ public class BoardDao {
     /**
      * 게시글 삭제
      * @param boardNo 게시글 번호
-     * @return 성공시 1, 실패시 0 반환
+     * @return 성공시 1 반환
      */
     //게시글 삭제
     public int deleteBoard(int boardNo){
@@ -322,7 +322,7 @@ public class BoardDao {
     /**
      * 댓글 등록
      * @param b 댓글 정보
-     * @return 성공시 1, 실패시 0 반환
+     * @return 성공시 1 반환
      */
     public int inertBoardComment(BoardComment b){
         Connection conn=null;

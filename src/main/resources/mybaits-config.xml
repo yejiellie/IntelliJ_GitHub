@@ -13,6 +13,7 @@
         <typeAlias type="com.study.vo.Board" alias="board"/>
         <typeAlias type="com.study.vo.BoardFile" alias="boardFile"/>
         <typeAlias type="com.study.vo.Category" alias="category"/>
+        <typeAlias type="com.study.vo.BoardComment" alias="comment"/>
     </typeAliases>
 
     <environments default="ebsoft">

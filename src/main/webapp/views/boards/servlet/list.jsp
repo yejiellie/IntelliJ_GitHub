@@ -109,15 +109,24 @@
                         </c:if>
                     </td>
                     <td><c:out value="${b.file.isEmpty()?'':'📎'}"/></td>
-                    <td><a href="${path}/views/boards/free/view.jsp?boardNo=${b.boardNo}">${fn:length(b.title) ge 30?fn:substring(b.title,0,30)+="...":b.title}</a></td>
+                    <td><a href="${path}/board/boardDetail.do?boardNo=${b.boardNo}">${fn:length(b.title) ge 30?fn:substring(b.title,0,30)+="...":b.title}</a></td>
                     <td>${b.writer}</td>
                     <td>${b.boardCount}</td>
                     <td><fmt:formatDate type="both" value="${b.createDay}" /></td>
-                    <td><fmt:formatDate type="both" value="${b.updateDay}"/></td>
+                    <td>
+                        <c:if test="${b.updateDay eq null}">
+                            -
+                        </c:if>
+                        <c:if test="${not empty b.updateDay}">
+                            <fmt:formatDate type="both" value="${b.updateDay}"/>
+                        </c:if>
+
+                    </td>
                 </tr>
                 </c:forEach>
             </c:if>
         </table>
+
 
         <div id="pageBar">${pageBar}</div>
         <div style="float: right; padding: 50px">
@@ -125,7 +134,7 @@
         </div>
         <script>
             const insertbaord=()=>{
-                location.href="${path}/views/boards/free/write.jsp";
+                location.href="${path}/board/boardWritePage.do";
             }
         </script>
     </section>

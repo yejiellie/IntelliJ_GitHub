@@ -33,9 +33,6 @@
             ori = mr.getOriginalFileName(filename);
             file = mr.getFilesystemName(filename);
 
-            System.out.println(file);
-            System.out.println(ori);
-
             boardfile = BoardFile.builder().newName(file).oriName(ori).build();
             files.add(boardfile);
             int key=dao.newKeyValue();
