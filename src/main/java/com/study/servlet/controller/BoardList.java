@@ -1,7 +1,6 @@
 package com.study.servlet.controller;
 
-import com.study.dao.BoardDao;
-import com.study.dao.CategoryDao;
+import com.study.servlet.service.BoardService;
 import com.study.vo.Board;
 import com.study.vo.Category;
 
@@ -22,57 +21,55 @@ public class BoardList extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        // TODO Auto-generated constructor stub
-        CategoryDao cdao=new CategoryDao();
-        List<Category> categoryList=cdao.selectAll(); //전체 카테고리 호출
+        BoardService service = new BoardService();
 
-        BoardDao dao=new BoardDao();
-//    List<Board> list=dao.searchAll();  //전체 게시글 호출
-
+        //전체 카테고리 호출
+        List<Category> categoryList = service.categoryAll();
         //페이지바 구현하기
         int cPage;              //현재 사용자가 보고있는 페이지
         int numPerpage=5;       //페이지당 출력될 데이터의 갯수
 
         try {
-            cPage=Integer.parseInt(req.getParameter("cPage"));
+            cPage = Integer.parseInt(req.getParameter("cPage"));
         }catch(NumberFormatException e) {
-            cPage=1;
+            cPage = 1;
         }
-
-        List<Board> list=dao.searchAll(cPage,numPerpage);
-
-        int totalData=dao.selectBoardCount();
-        String pageBar="";
-        int pageBarSize=5;
+        //전체 게시글
+        List<Board> list = service.searchAll(cPage,numPerpage);
+        //게시글 수
+        int totalData = service.selectBoardCount();
+        String pageBar = "";
+        int pageBarSize = 5;
         //전체 페이지 수
-        int totalPage=(int)Math.ceil((double)totalData/numPerpage);
+        int totalPage = (int)Math.ceil((double)totalData/numPerpage);
 
-        int pageNo=((cPage-1)/pageBarSize)*pageBarSize+1;
-        int pageEnd=pageNo+pageBarSize-1;
+        int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;
+        int pageEnd = pageNo+pageBarSize-1;
 
         if(pageNo==1) {
-            pageBar+="<span>[이전]</span>";
+            pageBar += "<span>[이전]</span>";
         }else {
-            pageBar+="<a href='"+req.getContextPath()
-                    +"/views/boards/free/list.jsp?cPage="+(pageNo-1)+"'> [이전] </a>";
+            pageBar += "<a href='"+req.getContextPath()
+                    +"/board/BoardList.do?cPage="+(pageNo-1)+"'> [이전] </a>";
         }
         while(!(pageNo>pageEnd||pageNo>totalPage)) {
             if(cPage==pageNo) {
-                pageBar+="<span>"+pageNo+"</span>";
+                pageBar += "<span>"+pageNo+"</span>";
             }else {
-                pageBar+="<a href='"+req.getContextPath()
-                        +"/views/boards/free/list.jsp?cPage="+pageNo+"'>"+" "+pageNo+" "+"</a>";
+                pageBar += "<a href='"+req.getContextPath()
+                        +"/board/BoardList.do?cPage="+pageNo+"'>"+" "+pageNo+" "+"</a>";
             }
             pageNo++;
         }
 
         if(pageNo>totalPage) {
-            pageBar+="<span>[다음]</span>";
+            pageBar += "<span>[다음]</span>";
         }else {
-            pageBar+="<a href='"+req.getContextPath()
-                    +"/views/boards/free/list.jsp?cPage="+pageNo+"'> [다음] </a>";
+            pageBar += "<a href='"+req.getContextPath()
+                    +"/board/BoardList.do?cPage="+pageNo+"'> [다음] </a>";
         }
 
+        System.out.println(list);
         req.setAttribute("totalData",totalData);        //총 게시글수
         req.setAttribute("categoryList",categoryList);  //카테고리
         req.setAttribute("list",list);                  //모든 게시글

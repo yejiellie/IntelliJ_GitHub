@@ -57,10 +57,9 @@ public class BoardDao {
     }
 
     /**
-     * 
+     * 페이지처리시 사용
      * @return 게시글 갯수반환
      */
-    //페이지바
     public int selectBoardCount() {
         Connection conn=null;
         PreparedStatement pstmt=null;
@@ -68,7 +67,7 @@ public class BoardDao {
         int count=0;
         try {
             conn=ConnectionTest.getConnection();
-            pstmt=conn.prepareStatement("SELECT COUNT(*) FROM BOARD");
+            pstmt=conn.prepareStatement("SELECT COUNT(*) FROM board");
             rs=pstmt.executeQuery();
             if(rs.next()) count=rs.getInt(1);
         }catch(SQLException e) {
@@ -81,14 +80,19 @@ public class BoardDao {
         }return count;
     }
 
-    //게시글 등록
+    /**
+     * 
+     *게시글 등록
+     * @param b 게시글의 정보를 builder에 담음
+     * @return 성공시 1반환 실패시 0 반환
+     */
     public int insertBoard(Board b){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="INSERT INTO BOARD VALUES(NULL,?,?,?,?,?,DEFAULT,NULL,DEFAULT);";
+            String sql="INSERT INTO baord VALUES(NULL,?,?,?,?,?,DEFAULT,NULL,DEFAULT);";
             pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,b.getCateNo());
             pstmt.setString(2,b.getWriter());
@@ -106,7 +110,10 @@ public class BoardDao {
         return result;
     }
 
-    // 게시글 등록 후 시퀀스 값을 가져오려고 하는데....
+    /**
+     * 게시글 등록 후 게시글 번호를 바로 가져오기 위해 생성
+     * @return 게시글 번호 (boardNo)
+     */
     public int newKeyValue(){
         Connection conn=null;
         PreparedStatement pstmt=null;
@@ -128,15 +135,19 @@ public class BoardDao {
         return count;
     }
 
-
-    ///////////////////////////파일 업로드
+    /**
+     *
+     * @param b 파일 정보
+     * @param boardNo 게시글 번호
+     * @return 성공시 1, 실패시 0 반환
+     */
     public int upload(BoardFile b,int boardNo){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="INSERT INTO BOARDFILE VALUES(NULL,?,?,?)";
+            String sql="INSERT INTO baordfile VALUES(NULL,?,?,?)";
             pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,boardNo);
             pstmt.setString(2,b.getOriName());
@@ -152,6 +163,11 @@ public class BoardDao {
         return result;
     }
 
+    /**
+     * 
+     * 게시글 builder용
+     * @return
+     */
     public static Board getBoard(ResultSet rs) throws SQLException{
         return Board.builder()
                 .boardNo(rs.getInt("BOARD_NO"))
@@ -166,7 +182,11 @@ public class BoardDao {
                 .build();
     }
 
-    //게시글 상세보기
+    /**
+     * 게시글 상세보기
+     * @param boardNo 게시글 번호
+     * @return 게시글 정보
+     */
     public Board viewDetail(int boardNo){
         Connection conn=null;
         PreparedStatement pstmt=null;
@@ -175,7 +195,7 @@ public class BoardDao {
         try{
             conn=ConnectionTest.getConnection();
             updateReadCount(boardNo);
-            pstmt=conn.prepareStatement("SELECT * FROM BOARD WHERE BOARD_NO=?");
+            pstmt=conn.prepareStatement("SELECT * FROM board WHERE board_no=?");
             pstmt.setInt(1,boardNo);
             rs=pstmt.executeQuery();
             if(rs.next()) b=getBoard(rs);
@@ -190,14 +210,18 @@ public class BoardDao {
         return b;
     }
 
-    //게시글 수정하기
+    /**
+     * 게시글 수정하기
+     * @param b 게시글 정보
+     * @return 성공시 1, 실패시 0
+     */
     public int updateBoard(Board b){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="UPDATE BOARD SET WRITER=?,BOARD_PW=?,TITLE=?,CONTENT=?,UPDATEDAY=NOW() WHERE BOARD_NO=?;";
+            String sql="UPDATE BOARD SET writer=?,board_pw=?,title=?,content=?,updateday=NOW() WHERE baord_no=?;";
             pstmt=conn.prepareStatement(sql);
             pstmt.setString(1,b.getWriter());
             pstmt.setString(2,b.getBoardPw());
@@ -215,14 +239,18 @@ public class BoardDao {
         return result;
     }
 
-    //게시글 조회수
+    /**
+     * 게시글 조회수
+     * @param boardNo 게시글 번호
+     * @return 성공시 1, 실패시 0 반화
+     */
     public int updateReadCount(int boardNo){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
         try {
             conn=ConnectionTest.getConnection();
-            pstmt=conn.prepareStatement("UPDATE BOARD SET BOARD_COUNT=BOARD_COUNT+1 WHERE BOARD_NO=?");
+            pstmt=conn.prepareStatement("UPDATE board SET board_count=board_count+1 WHERE board_no=?");
             pstmt.setInt(1, boardNo);
             result=pstmt.executeUpdate();
         }catch(SQLException e) {
@@ -235,6 +263,11 @@ public class BoardDao {
         return result;
     }
 
+    /**
+     * 게시글 삭제
+     * @param boardNo 게시글 번호
+     * @return 성공시 1, 실패시 0 반환
+     */
     //게시글 삭제
     public int deleteBoard(int boardNo){
         Connection conn=null;
@@ -242,7 +275,7 @@ public class BoardDao {
         int result=0;
         try {
             conn=ConnectionTest.getConnection();
-            pstmt=conn.prepareStatement("DELETE FROM BOARD WHERE BOARD_NO=?");
+            pstmt=conn.prepareStatement("DELETE FROM board WHERE board_no=?");
             pstmt.setInt(1, boardNo);
             result=pstmt.executeUpdate();
         }catch(SQLException e) {
@@ -254,7 +287,10 @@ public class BoardDao {
         }return result;
     }
 
-    //////////댓글 목록
+    /**
+     * 댓글 목록 
+     * @return 댓글 전체 목록
+     */
     public List<BoardComment> listComment(){
         Connection conn=null;
         PreparedStatement pstmt=null;
@@ -262,7 +298,7 @@ public class BoardDao {
         List<BoardComment> list=new ArrayList();
         try{
             conn=ConnectionTest.getConnection();
-            pstmt=conn.prepareStatement("SELECT * FROM BOARDCOMMENT");
+            pstmt=conn.prepareStatement("SELECT * FROM boardcomment");
             rs=pstmt.executeQuery();
             while(rs.next()) {
                 BoardComment b = new BoardComment();
@@ -282,15 +318,19 @@ public class BoardDao {
         }
         return list;
     }
-    
-    //댓글 등록
+
+    /**
+     * 댓글 등록
+     * @param b 댓글 정보
+     * @return 성공시 1, 실패시 0 반환
+     */
     public int inertBoardComment(BoardComment b){
         Connection conn=null;
         PreparedStatement pstmt=null;
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            pstmt=conn.prepareStatement("INSERT INTO BOARDCOMMENT VALUES(NULL,?,DEFAULT,?);");
+            pstmt=conn.prepareStatement("INSERT INTO boardcomment VALUES(NULL,?,DEFAULT,?);");
             pstmt.setInt(1,b.getBoardNo());
             pstmt.setString(2,b.getContent());
             result=pstmt.executeUpdate();

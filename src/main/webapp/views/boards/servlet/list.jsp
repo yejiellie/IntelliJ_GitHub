@@ -56,7 +56,6 @@
     }
 </style>
 
-
 <div style="padding: 20px;">
     <h2 style="padding-bottom: 20px">자유 게시판 - 목록</h2>
     <form action="${path}/views/boards/free/searchInfo.jsp" method="get">
@@ -99,17 +98,6 @@
                 <th>등록일시</th>
                 <th>수정일시</th>
             </tr>
-<%--                        //날짜 형식을 바꿔줌--%>
-<%--                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");--%>
-<%--                        String createday=formatter.format(b.getCreateDay());--%>
-<%--                        String updateday="-";--%>
-<%--                        if(b.getUpdateDay()!=null){--%>
-<%--                            updateday=formatter.format(b.getUpdateDay());--%>
-<%--                        }--%>
-<%--                        String title="";--%>
-<%--                        //제목이 80자가 넘는경우 ...으로 대체지만 너무 길어서 30자로 대체--%>
-<%--                        if(b.getTitle().length()>=30) {--%>
-<%--                            title = b.getTitle().substring(0, 30).concat("...");--%>
             <c:if test="${!list.isEmpty()}">
                 <c:forEach var="b" items="${list}">
                 <tr id="tableinfo">
@@ -120,7 +108,7 @@
                             </c:forEach>
                         </c:if>
                     </td>
-                    <td><c:out value="${b.file!=null?'📎':''}"/></td>
+                    <td><c:out value="${b.file.isEmpty()?'':'📎'}"/></td>
                     <td><a href="${path}/views/boards/free/view.jsp?boardNo=${b.boardNo}">${fn:length(b.title) ge 30?fn:substring(b.title,0,30)+="...":b.title}</a></td>
                     <td>${b.writer}</td>
                     <td>${b.boardCount}</td>
@@ -131,7 +119,7 @@
             </c:if>
         </table>
 
-<%--        <div id="pageBar">${pageBar}</div>--%>
+        <div id="pageBar">${pageBar}</div>
         <div style="float: right; padding: 50px">
             <input type="button" onclick="insertbaord();" value="등록" style="width: 90px" />
         </div>

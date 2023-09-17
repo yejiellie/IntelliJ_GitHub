@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+    <properties resource="driver.properties"></properties>
+
+<!--  디비 데이터가 비었을때 공란으로 대체해라  -->
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
+    <!-- 별칭을 부여-->
+    <typeAliases>
+        <typeAlias type="com.study.vo.Board" alias="board"/>
+        <typeAlias type="com.study.vo.BoardFile" alias="boardFile"/>
+        <typeAlias type="com.study.vo.Category" alias="category"/>
+    </typeAliases>
+
+    <environments default="ebsoft">
+        <environment id="ebsoft">
+            <!--   JDBC 커밋과 롤백을 처리하기 위해 사용 -->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${user}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+        <mapper resource="/mapper/board-mapper.xml"/>
+    </mappers>
+</configuration>
