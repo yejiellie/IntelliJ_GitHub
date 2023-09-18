@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Map;
 
 public class BoardDaoServlet {
 
@@ -90,6 +91,15 @@ public class BoardDaoServlet {
         return session.update("board.updateBoard",b);
     }
 
+    /**
+     * 게시물 검색
+     * @param session
+     * @param param 날짜, 검색어, 카테고리
+     * @return 검색 결과
+     */
+    public List<Board> searchBoard(SqlSession session, Map<String,Object> param){
+        return session.selectList("board.searchBoard",param);
+    }
 
 
 //    댓글

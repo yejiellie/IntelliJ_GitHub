@@ -68,6 +68,36 @@
         UPDATE BOARD SET writer=#{writer},board_pw=#{boardPw},title=#{title},content=#{content},updateday=NOW() WHERE board_no=#{boardNo}
     </update>
 
+    <!--  게시글 검색  -->
+    <select id="searchBoard" resultMap="boardMap">
+        SELECT * FROM board where CATE_NO=#{cateNo} AND CREATEDAY >= #{beforeDate} AND title '%'||#{search}||'%'
+    </select>
+
+<!--    <select id="searchItemSort" resultMap="sellitemMap">-->
+<!--        SELECT * FROM SELLITEM WHERE 1=1-->
+<!--        <if test="itemct != null and itemct != ''">-->
+<!--            AND ITEM_CATEGORY LIKE '%'||#{itemct}||'%'-->
+<!--        </if>-->
+<!--        <if test="(max!=null and max != 0) or (min != 0 and min !=null)">-->
+<!--            AND ITEM_PRICE >= #{min} AND ITEM_PRICE &lt;= #{max}-->
+<!--        </if>-->
+<!--        <if test="itemsort !='' and itemsort!=null">-->
+<!--            <if test="itemsort eq '고액순'">-->
+<!--                ORDER BY ITEM_PRICE DESC-->
+<!--            </if>-->
+<!--            <if test="itemsort eq '저가순'">-->
+<!--                ORDER BY ITEM_PRICE-->
+<!--            </if>-->
+<!--            <if test="itemsort eq '인기상품순'">-->
+<!--                ORDER BY ITEM_STOCK DESC-->
+<!--            </if>-->
+<!--        </if>-->
+<!--    </select>-->
+
+
+
+
+
 <!--   댓글    -->
     <!--  댓글조회  -->
     <select id="listComment" resultMap="commentMap">

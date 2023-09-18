@@ -7,6 +7,7 @@ import com.study.vo.Category;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.study.common.SessionTemplate.getSession;
 public class BoardService {
@@ -50,7 +51,7 @@ public class BoardService {
     /**
      * 게시글 입력
      * @param b 게시글 정보
-     * @return 성공시 1, 실패시 0반환
+     * @return 성공시 1 반환
      */
     public int insertBoard(Board b){
         SqlSession session = getSession();
@@ -113,6 +114,17 @@ public class BoardService {
         return result;
     }
 
+    /**
+     * 게시글 검색
+     * @param param
+     * @return 검색 결과
+     */
+    public List<Board> searchBoard(Map<String,Object> param){
+        SqlSession session = getSession();
+        List<Board> result = dao.searchBoard(session,param);
+        session.close();
+        return result;
+    }
 
 ////댓글
 

@@ -75,7 +75,6 @@ public class BoardList extends HttpServlet {
         req.setAttribute("pageBar",pageBar);
         req.getRequestDispatcher("/views/boards/servlet/list.jsp").forward(req,res);
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         // TODO Auto-generated method stub

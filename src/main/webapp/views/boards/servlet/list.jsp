@@ -58,26 +58,57 @@
 
 <div style="padding: 20px;">
     <h2 style="padding-bottom: 20px">자유 게시판 - 목록</h2>
-    <form action="${path}/views/boards/free/searchInfo.jsp" method="get">
+    <%--  검색 기능  --%>
+    <form name="searchBox" action="${path}/board/searchBoard.do" method="get">
         <div id="searchdata">
-            등록일 <input type="date" id="beforeDate" />~<input type="date" id="currentDate"/>
+            등록일 <input type="date" id="beforeDate" name="beforeDate"/>~<input type="date" id="currentDate" name="currentDate"/>
             <div id="totalsearch">
                 <select name="likeLanguage" id="" class="pl">
                     <option selected disabled>카테고리 선택</option>
                     <%--카테고리 전체 내용을 출력 --%>
                     <c:if test="${!categoryList.isEmpty()}">
                         <c:forEach var="cateList" items="${categoryList}">
-                            <option value="${cateList.cateNo}">${cateList.cateName}</option>
+                            <option value="${cateList.cateNo}" name="cateNo">${cateList.cateName}</option>
                         </c:forEach>
                     </c:if>
                 </select>
-                <input type="text" id="searchbox" placeholder="검색어를 입력해주세요.(제목+작성자+내용)"/>
+                <input type="text" id="searchbox" name="searchbox" placeholder="검색어를 입력해주세요.(제목+작성자+내용)"/>
                 <input type="submit" id="btn-search" value="검색" />
+<%--                <input type="button" id="btn-search" value="검색" onclick="getSearchBoard()" />--%>
             </div>
         </div>
     </form>
+    <c:if test="${not empty searchBoard}">
+        ${searchBoard}
+    </c:if>
 
     <script>
+        // function getSearchBoard(){
+        //     $.ajax({
+        //         type: 'GET',
+        //         url : "/board/searchBoard.do",
+        //         data : $("form[name=search-form]").serialize(),
+        //         success : function(result) {
+        //             //테이블 초기화
+        //             $('#boardtable > tbody').empty();
+        //             if (result.length >= 1) {
+        //                 result.forEach(function (item) {
+        //                     str = '<tr>'
+        //                     str += "<td>" + item.idx + "</td>";
+        //                     str += "<td>" + item.writer + "</td>";
+        //                     str += "<td><a href = '/board/detail?idx=" + item.idx + "'>" + item.title + "</a></td>";
+        //                     str += "<td>" + item.date + "</td>";
+        //                     str += "<td>" + item.hit + "</td>";
+        //                     str += "</tr>"
+        //                     $('#boardtable').append(str);
+        //                 })
+        //             }
+        //         }
+        //     })
+        // }
+
+
+
         //input태그 현재 날짜 디폴트값
         document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
         var now = new Date();

@@ -81,9 +81,10 @@
         <h1><a href="<%=request.getContextPath()%>/index.jsp" style="text-decoration:none; color:black;">Hello Servlet</a></h1>
         <nav>
             <ul class="main-nav">
-                <li class="home"><a href="<%=request.getContextPath()%>/index.jsp" style="text-decoration:none; color:black;"><strong>home</strong></a></li>
+                <li class="home"><a href="<%=request.getContextPath()%>/index.jsp"><strong>Home</strong></a></li>
                 <li><a href="<%=request.getContextPath()%>/views/boards/free/list.jsp"><strong>jsp게시판</strong></a></li>
                 <li><a href="${path}/board/BoardList.do"><strong>Servlet게시판</strong></a></li>
+<%--                <li><a href="${path}/Move.do"><strong>Spring게시판</strong></a></li>--%>
             </ul>
         </nav>
     </header>
