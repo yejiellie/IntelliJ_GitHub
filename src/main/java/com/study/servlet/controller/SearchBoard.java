@@ -38,9 +38,6 @@ public class SearchBoard extends HttpServlet {
         param.put("currentDate", currentDate);
         List<Board> searchBoard = new BoardService().searchBoard(param);
 
-        System.out.println(param);
-        System.out.println("==================");
-        System.out.println(searchBoard);
         // 검색 결과를 JSON 형식으로 변환
         Gson gson = new Gson();
         String jsonResult = gson.toJson(searchBoard);

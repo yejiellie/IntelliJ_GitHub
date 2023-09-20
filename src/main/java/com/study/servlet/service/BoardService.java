@@ -3,6 +3,7 @@ package com.study.servlet.service;
 import com.study.servlet.dao.BoardDaoServlet;
 import com.study.vo.Board;
 import com.study.vo.BoardComment;
+import com.study.vo.BoardFile;
 import com.study.vo.Category;
 import org.apache.ibatis.session.SqlSession;
 
@@ -57,6 +58,12 @@ public class BoardService {
         SqlSession session = getSession();
         int result = dao.insertBoard(session,b);
         if(result > 0){
+            if(!b.getFile().isEmpty()){
+                for(BoardFile file : b.getFile()){
+                    file.setBoard(b);
+                    result += dao.insertFile(session,file);
+                }
+            }
             session.commit();
         }else{
             session.rollback();

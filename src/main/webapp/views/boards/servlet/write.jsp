@@ -108,9 +108,9 @@
                     <th>첨부파일</th>
                     <td>
                         <div id="filearea">
-                            <input class="" type="file" name="boardFile" id="boardFile1" value="">
-                            <input class="" type="file" name="boardFile" id="boardFile2" value="">
-                            <input class="" type="file" name="boardFile" id="boardFile3" value="">
+                            <input class="" type="file" name="boardFile1" id="boardFile1" value="">
+                            <input class="" type="file" name="boardFile2" id="boardFile2" value="">
+                            <input class="" type="file" name="boardFile3" id="boardFile3" value="">
                         </div>
                     </td>
                 </tr>

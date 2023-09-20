@@ -48,6 +48,13 @@
         </selectKey>
     </insert>
 
+    <!--  파일 업로드  -->
+    <insert id="insertFile" parameterType="boardFile">
+        INSERT INTO boardFile VALUES (NULL,#{board.boardNo},#{oriName})
+    </insert>
+
+
+
     <!--  게시글 상세보기  -->
     <select id="viewDetail" resultMap="boardMap">
         SELECT * FROM board WHERE board_no=#{boardNo}
@@ -79,20 +86,7 @@
                 OR content LIKE CONCAT('%',#{search}, '%')
             );
     </select>
-<!--    CATE_NO=#{cateNo} AND CREATEDAY >= #{beforeDate} AND CREATEDAY &lt;= #{currentDate} AN D title LIKE '%'||#{search}||'%'-->
 
-    <!--  검색용 결과값  -->
-    <resultMap id="searchboardMap" type="board">
-        <id property="boardNo" column="BOARD_NO"/>
-        <result property="cateNo" column="CATE_NO"/>
-        <result property="writer" column="WRITER"/>
-        <result property="boardPw" column="BOARD_PW"/>
-        <result property="title" column="TITLE"/>
-        <result property="content" column="CONTENT"/>
-        <result property="createDay" column="CREATEDAY"/>
-        <result property="updateDay" column="UPDATEDAY"/>
-        <result property="boardCount" column="BOARD_COUNT"/>
-    </resultMap>
 
 
 

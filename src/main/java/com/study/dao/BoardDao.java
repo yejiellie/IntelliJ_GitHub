@@ -147,11 +147,11 @@ public class BoardDao {
         int result=0;
         try{
             conn=ConnectionTest.getConnection();
-            String sql="INSERT INTO boardfile VALUES(NULL,?,?,?)";
+            String sql="INSERT INTO boardfile VALUES(NULL,?,?)";
             pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,boardNo);
             pstmt.setString(2,b.getOriName());
-            pstmt.setString(3,b.getNewName());
+//            pstmt.setString(3,b.getNewName());
             result=pstmt.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();

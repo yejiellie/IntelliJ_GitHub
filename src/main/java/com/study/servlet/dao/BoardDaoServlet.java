@@ -2,6 +2,7 @@ package com.study.servlet.dao;
 
 import com.study.vo.Board;
 import com.study.vo.BoardComment;
+import com.study.vo.BoardFile;
 import com.study.vo.Category;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -100,6 +101,21 @@ public class BoardDaoServlet {
     public List<Board> searchBoard(SqlSession session, Map<String,Object> param){
         return session.selectList("board.searchBoard",param);
     }
+
+//  파일
+
+    /**
+     * 파일 업로드
+     * @param session
+     * @param file 파일 정보
+     * @return 성공시 1반환
+     */
+    public int insertFile(SqlSession session, BoardFile file){
+        return session.insert("board.insertFile",file);
+    }
+
+
+
 
 
 //    댓글
