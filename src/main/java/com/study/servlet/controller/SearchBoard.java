@@ -25,12 +25,13 @@ public class SearchBoard extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 
-        //제목, 작성자, 내용
+        //데이터를 받아옴 
         String searchbox = req.getParameter("searchbox");
         int cateNo = Integer.parseInt(req.getParameter("cateNo"));
         String beforeDate = req.getParameter("beforeDate");
         String currentDate = req.getParameter("currentDate");
 
+        //받은 값을 map에 담아서 전송
         Map<String,Object> param = new HashMap<>();
         param.put("search", searchbox);
         param.put("cateNo", cateNo);
@@ -44,9 +45,6 @@ public class SearchBoard extends HttpServlet {
 
         // JSON 응답 보내기
         res.getWriter().write(jsonResult);
-
-//        req.setAttribute("searchBoard",searchBoard);
-//        req.getRequestDispatcher("/views/boards/servlet/list.jsp").forward(req,res);
 
     }
 

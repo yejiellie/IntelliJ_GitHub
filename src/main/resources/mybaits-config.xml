@@ -8,7 +8,7 @@
         <setting name="jdbcTypeForNull" value="NULL" />
     </settings>
 
-    <!-- 별칭을 부여-->
+    <!-- 별칭을 부여 mapper에서 사용할 수 있다-->
     <typeAliases>
         <typeAlias type="com.study.vo.Board" alias="board"/>
         <typeAlias type="com.study.vo.BoardFile" alias="boardFile"/>
@@ -29,7 +29,7 @@
         </environment>
     </environments>
 
-
+    <!--   쿼리문을 작성할 매퍼 경로  -->
     <mappers>
         <mapper resource="/mapper/board-mapper.xml"/>
     </mappers>

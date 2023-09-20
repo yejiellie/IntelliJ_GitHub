@@ -53,8 +53,6 @@
         INSERT INTO boardFile VALUES (NULL,#{board.boardNo},#{oriName})
     </insert>
 
-
-
     <!--  게시글 상세보기  -->
     <select id="viewDetail" resultMap="boardMap">
         SELECT * FROM board WHERE board_no=#{boardNo}
@@ -88,7 +86,17 @@
     </select>
 
 
+<!--  파일  -->
+    <!--  파일 조회   -->
+    <select id="selectFileList" resultMap="boardFileMap">
+        SELECT * FROM boardfile WHERE board_no=#{boardNo}
+    </select>
 
+    <resultMap id="boardFileMap" type="boardFile">
+        <id property="fileNo" column="FILE_NO"/>
+        <result property="boardNo" column="BOARD_NO"/>
+        <result property="oriName" column="ORI_NAME"/>
+    </resultMap>
 
 
 <!--   댓글    -->

@@ -132,6 +132,22 @@ public class BoardService {
         session.close();
         return result;
     }
+    
+////파일
+
+    /**
+     * 게시글 파일 정보 가져오기
+     * @param boardNo 게시글 번호
+     * @return 파일 정보
+     */
+    public List<BoardFile> selectFileList(int boardNo){
+        SqlSession session = getSession();
+        List<BoardFile> result = dao.selectFileList(session,boardNo);
+        session.close();
+        return result;
+    }    
+    
+    
 
 ////댓글
 

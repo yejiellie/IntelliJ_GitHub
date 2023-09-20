@@ -114,6 +114,15 @@ public class BoardDaoServlet {
         return session.insert("board.insertFile",file);
     }
 
+    /**
+     * 게시글 파일 정보 가져오기
+     * @param session
+     * @param boardNo 게시글 번호
+     * @return 파일 정보
+     */
+    public List<BoardFile> selectFileList(SqlSession session, int boardNo){
+        return session.selectList("board.selectFileList",boardNo);
+    }
 
 
 

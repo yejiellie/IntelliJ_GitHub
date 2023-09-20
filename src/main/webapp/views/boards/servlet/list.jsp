@@ -59,7 +59,6 @@
 <div style="padding: 20px;">
     <h2 style="padding-bottom: 20px">자유 게시판 - 목록</h2>
     <%--  검색 기능  --%>
-<%--    <form name="searchBox" action="${path}/board/searchBoard.do" method="get" onsubmit="call_ajax();return false">--%>
     <form name="searchBox-form" id="searchBox-form" autocomplete="off">
         <div id="searchdata">
             등록일 <input type="date" id="beforeDate" name="beforeDate"/>~<input type="date" id="currentDate" name="currentDate"/>
@@ -93,13 +92,13 @@
                 $.ajax({
                     type: 'GET',
                     url : "/board/searchBoard.do",
-                    data : $("#searchBox-form").serialize(),
+                    data : $("#searchBox-form").serialize(),   //폼태그 안에 데이터를 직렬화해서 보냄
                     success : function(result) {
-                        //테이블 초기화
+                        //테이블 정보 초기화
                         $('#tbl-board > tbody').empty();
                         let str = "";
                         if (result.length > 0) {
-                            var data = JSON.parse(result);
+                            var data = JSON.parse(result);      //JSON을 객체로 변경
                             for (let i=0;i<data.length;i++) {
                                 str += '<tr>';
                                 str += "<td>" + data[i].cateNo + "</td>";
@@ -121,11 +120,13 @@
                                 console.log(data[i].updateDay);
                                 str += "</tr>";
                             }
+                            //총 게시물 수
                             $('#total').html("<p id='total'>총 " + data.length + " 건" + "</p>")
                         }else{
-                            str += "<tr>결과가 없습니다.</tr>";
+                            str += "<tr><td>결과가 없습니다.</td></tr>";
                             $('#total').html("<p id='total'>총 0 건</p>")
                         }
+                        //ajax페이지 처리는....
                         $('#pageBar').html("<div></div>");
                         $('#tbl-board > tbody').append(str);
                     }

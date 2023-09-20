@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -113,7 +113,13 @@
     <hr class="my-hr" />
     <pre id="contetnarea">${b.content}</pre>
     <div id="filearea">
-        (첨부파일 위치)
+        <c:if test="${not empty files}">
+            <c:forEach var="f" items="${files}">
+                <div style="padding: 10px;">
+                    <a href="${path}/board/BoardFileDown.do?oriName=${f.oriName}">${f.oriName}</a>
+                </div>
+            </c:forEach>
+        </c:if>
     </div>
 
 <%--댓글--%>
