@@ -1,5 +1,6 @@
 package com.study.servlet.controller;
 
+import com.google.gson.Gson;
 import com.study.servlet.service.BoardService;
 import com.study.vo.Board;
 
@@ -35,11 +36,20 @@ public class SearchBoard extends HttpServlet {
         param.put("cateNo", cateNo);
         param.put("beforeDate", beforeDate);
         param.put("currentDate", currentDate);
-        System.out.println(param);
         List<Board> searchBoard = new BoardService().searchBoard(param);
 
-        req.setAttribute("searchBoard",searchBoard);
-        req.getRequestDispatcher("/views/boards/servlet/list.jsp").forward(req,res);
+        System.out.println(param);
+        System.out.println("==================");
+        System.out.println(searchBoard);
+        // 검색 결과를 JSON 형식으로 변환
+        Gson gson = new Gson();
+        String jsonResult = gson.toJson(searchBoard);
+
+        // JSON 응답 보내기
+        res.getWriter().write(jsonResult);
+
+//        req.setAttribute("searchBoard",searchBoard);
+//        req.getRequestDispatcher("/views/boards/servlet/list.jsp").forward(req,res);
 
     }
 

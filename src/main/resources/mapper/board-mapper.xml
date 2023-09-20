@@ -70,30 +70,29 @@
 
     <!--  게시글 검색  -->
     <select id="searchBoard" resultMap="boardMap">
-        SELECT * FROM board where CATE_NO=#{cateNo} AND CREATEDAY >= #{beforeDate} AND title '%'||#{search}||'%'
+        SELECT * FROM board
+        WHERE 1=1
+          AND (cate_no = #{cateNo})
+          AND (createday >= #{beforeDate} AND createday &lt;= #{currentDate})
+          AND ( title LIKE CONCAT('%',#{search}, '%')
+                OR writer LIKE CONCAT('%',#{search}, '%')
+                OR content LIKE CONCAT('%',#{search}, '%')
+            );
     </select>
+<!--    CATE_NO=#{cateNo} AND CREATEDAY >= #{beforeDate} AND CREATEDAY &lt;= #{currentDate} AN D title LIKE '%'||#{search}||'%'-->
 
-<!--    <select id="searchItemSort" resultMap="sellitemMap">-->
-<!--        SELECT * FROM SELLITEM WHERE 1=1-->
-<!--        <if test="itemct != null and itemct != ''">-->
-<!--            AND ITEM_CATEGORY LIKE '%'||#{itemct}||'%'-->
-<!--        </if>-->
-<!--        <if test="(max!=null and max != 0) or (min != 0 and min !=null)">-->
-<!--            AND ITEM_PRICE >= #{min} AND ITEM_PRICE &lt;= #{max}-->
-<!--        </if>-->
-<!--        <if test="itemsort !='' and itemsort!=null">-->
-<!--            <if test="itemsort eq '고액순'">-->
-<!--                ORDER BY ITEM_PRICE DESC-->
-<!--            </if>-->
-<!--            <if test="itemsort eq '저가순'">-->
-<!--                ORDER BY ITEM_PRICE-->
-<!--            </if>-->
-<!--            <if test="itemsort eq '인기상품순'">-->
-<!--                ORDER BY ITEM_STOCK DESC-->
-<!--            </if>-->
-<!--        </if>-->
-<!--    </select>-->
-
+    <!--  검색용 결과값  -->
+    <resultMap id="searchboardMap" type="board">
+        <id property="boardNo" column="BOARD_NO"/>
+        <result property="cateNo" column="CATE_NO"/>
+        <result property="writer" column="WRITER"/>
+        <result property="boardPw" column="BOARD_PW"/>
+        <result property="title" column="TITLE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="createDay" column="CREATEDAY"/>
+        <result property="updateDay" column="UPDATEDAY"/>
+        <result property="boardCount" column="BOARD_COUNT"/>
+    </resultMap>
 
 
 
@@ -111,6 +110,7 @@
         <result property="content" column="CONTENT"/>
     </resultMap>
 
+    <!--  댓글 등록  -->
     <insert id="inertBoardComment" parameterType="comment">
         INSERT INTO boardcomment VALUES(NULL,#{boardNo},DEFAULT,#{content});
     </insert>
