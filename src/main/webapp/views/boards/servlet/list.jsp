@@ -161,7 +161,7 @@
                             </c:forEach>
                         </c:if>
                     </td>
-                    <td><c:out value="${b.file.isEmpty()?'':'📎'}"/></td>
+                    <td><c:out value="${empty b.file?'':'📎'}"/></td>
                     <td><a href="${path}/board/boardDetail.do?boardNo=${b.boardNo}">${fn:length(b.title) ge 30?fn:substring(b.title,0,30)+="...":b.title}</a></td>
                     <td>${b.writer}</td>
                     <td>${b.boardCount}</td>

@@ -3,7 +3,7 @@
 <mapper namespace="board">
     <!-- 게시글 전체조회-->
     <select id="searchAll" resultMap="boardMap">
-        SELECT * FROM board;
+        SELECT * FROM board LEFT JOIN boardfile USING(BOARD_NO);
     </select>
 
     <!--  Board 명칭끼리 매칭해줌  -->
@@ -55,7 +55,7 @@
 
     <!--  게시글 상세보기  -->
     <select id="viewDetail" resultMap="boardMap">
-        SELECT * FROM board WHERE board_no=#{boardNo}
+        SELECT * FROM board LEFT JOIN boardfile USING(BOARD_NO) WHERE board_no=#{boardNo}
     </select>
 
     <!--  조회수 증가  -->
@@ -97,6 +97,11 @@
         <result property="boardNo" column="BOARD_NO"/>
         <result property="oriName" column="ORI_NAME"/>
     </resultMap>
+
+    <!--  파일 삭제  -->
+    <delete id="deleteFile" parameterType="_int">
+        DELETE FROM boardfile WHERE board_no=#{boardNo}
+    </delete>
 
 
 <!--   댓글    -->

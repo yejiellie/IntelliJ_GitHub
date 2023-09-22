@@ -3,7 +3,6 @@ package com.study.servlet.controller;
 import com.study.servlet.service.BoardService;
 import com.study.vo.Board;
 import com.study.vo.BoardComment;
-import com.study.vo.BoardFile;
 import com.study.vo.Category;
 
 import javax.servlet.ServletException;
@@ -33,13 +32,10 @@ public class boardDetail extends HttpServlet {
         Board b=service.viewDetail(boardNo);
         //댓글
         List<BoardComment> boardComment = service.listComment();
-        //해당 게시글 파일 가져오기
-        List<BoardFile> files = service.selectFileList(boardNo);
 
         req.setAttribute("categoryList",categoryList);  //카테고리
         req.setAttribute("boardNo",boardNo);
         req.setAttribute("boardComment",boardComment);
-        req.setAttribute("files",files);
         req.setAttribute("b",b);
         req.getRequestDispatcher("/views/boards/servlet/view.jsp").forward(req,res);
 

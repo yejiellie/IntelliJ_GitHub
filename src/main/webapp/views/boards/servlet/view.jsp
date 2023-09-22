@@ -20,10 +20,8 @@
     }
     #titlecate {
         display: flex;
-        /*justify-content: space-between;*/
         height: auto;
         padding-top: 20px;
-        /*padding-bottom: 10px;*/
     }
     #totalbtn > button {
         width: 90px;
@@ -60,30 +58,26 @@
     }
     .comment-editor {
         padding-top: 10px;
-        /*border-bottom: 1px solid;*/
-        /*border-top: 1px solid;*/
     }
     #filearea {
-        /*border: 1px solid tomato;*/
         padding-bottom: 50px;
-        margin: 20px;
+        margin: 30px;
     }
-    #contetnarea {
+    #contentnarea {
         width: 100%;
-        margin: 20px;
+        margin: 30px;
     }
     #readcount {
         font-size: 13px;
-        /*white-space: break-spaces;*/
     }
 </style>
 <div style="padding: 20px">
     <h2>게시판 - 보기</h2>
     <div id="pageunder">
-        <p>${b.writer}</p>
+        <h3>${b.writer}</h3>
         <div id="insertdate">
-            <p>등록일시 : <fmt:formatDate type="both" value="${b.createDay}" /></p>
-            <p>수정일시 :
+            <p><strong>등록일시 : </strong><fmt:formatDate type="both" value="${b.createDay}" /></p>
+            <p><strong>수정일시 : </strong>
                 <c:if test="${b.updateDay eq null}">
                     -
                 </c:if>
@@ -94,7 +88,7 @@
         </div>
     </div>
     <div id="titlecate" style="display: flex; font-weight: bold">
-        <div style="width: 10%">
+        <div style="padding-right: 10px">
         [
             <c:if test="${!categoryList.isEmpty()}">
                 <c:forEach var="c" items="${categoryList}">
@@ -111,11 +105,11 @@
         </div>
     </div>
     <hr class="my-hr" />
-    <pre id="contetnarea">${b.content}</pre>
+    <pre id="contentnarea">${b.content}</pre>
     <div id="filearea">
-        <c:if test="${not empty files}">
-            <c:forEach var="f" items="${files}">
-                <div style="padding: 10px;">
+        <c:if test="${not empty b.file}">
+            <c:forEach var="f" items="${b.file}">
+                <div style="padding-bottom: 10px;">
                     <a href="${path}/board/BoardFileDown.do?oriName=${f.oriName}">${f.oriName}</a>
                 </div>
             </c:forEach>

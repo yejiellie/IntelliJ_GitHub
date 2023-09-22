@@ -38,7 +38,7 @@
 <div style="padding: 20px">
     <h2 style="padding-bottom: 20px">게시판 - 수정</h2>
     <div id="board-container">
-        <form name="enrollBoard" action="${path}/board/BoardUpdate.do"
+        <form name="enrollBoard" action="${path}/board/BoardUpdate.do" enctype="multipart/form-data"
               method="post" onsubmit="return checkinsert();">
             <table id="tbl-board">
                 <tr>
@@ -100,9 +100,9 @@
                     <th>첨부파일</th>
                     <td>
                         <div id="filearea">
-                            <input type="file" name="file1" />
-                            <input type="file" name="file2"/>
-                            <input type="file" name="file3"/>
+                            <input type="file" name="file1" id="file1"/>
+                            <input type="file" name="file2" id="file2"/>
+                            <input type="file" name="file3" id="file3"/>
                         </div>
                     </td>
                 </tr>

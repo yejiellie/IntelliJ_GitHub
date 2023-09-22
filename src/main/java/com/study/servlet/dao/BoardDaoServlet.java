@@ -124,6 +124,16 @@ public class BoardDaoServlet {
         return session.selectList("board.selectFileList",boardNo);
     }
 
+    /**
+     * 파일 삭제하기
+     * @param session
+     * @param boardNo 게시글 번호 
+     * @return 성공시 1반환
+     */
+    public int deleteFile(SqlSession session, int boardNo){
+        return session.delete("board.deleteFile",boardNo);
+    }
+
 
 
 

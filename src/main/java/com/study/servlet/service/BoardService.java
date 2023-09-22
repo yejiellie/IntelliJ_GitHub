@@ -58,6 +58,7 @@ public class BoardService {
         SqlSession session = getSession();
         int result = dao.insertBoard(session,b);
         if(result > 0){
+            //게시글 등록 성공시 파일도 등록
             if(!b.getFile().isEmpty()){
                 for(BoardFile file : b.getFile()){
                     file.setBoard(b);
@@ -115,8 +116,24 @@ public class BoardService {
     public int updateBoard(Board b){
         SqlSession session = getSession();
         int result = dao.updateBoard(session,b);
-        if(result > 0) session.commit();
-        else session.rollback();
+        if(result > 0) {
+            if(!b.getFile().isEmpty()){
+                //기존파일을 삭제
+                result += dao.deleteFile(session,b.getBoardNo());
+                for(BoardFile file : b.getFile()){
+                    file.setBoard(b);
+                    //다시 넣어준다
+                    result += dao.insertFile(session,file);
+                }
+            }
+
+
+
+
+            session.commit();
+        } else {
+            session.rollback();
+        }
         session.close();
         return result;
     }
@@ -145,9 +162,9 @@ public class BoardService {
         List<BoardFile> result = dao.selectFileList(session,boardNo);
         session.close();
         return result;
-    }    
-    
-    
+    }
+
+
 
 ////댓글
 
