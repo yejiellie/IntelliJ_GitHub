@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
 @WebServlet("/board/BoardUpdate.do")
 public class BoardUpdate extends HttpServlet {
 
@@ -74,16 +73,15 @@ public class BoardUpdate extends HttpServlet {
             //파일을 추가했을때 기존 파일을 경로에서 삭제한다
             if (array.size() != 0) {
                 for (BoardFile f : array) {
-                    System.out.println(f.getOriName());
                     File del=new File(path+"/"+f.getOriName());
-                    System.out.println(del);
-                    if(del.exists()) del.delete();
+                    if(del.exists()) del.delete();  //파일 삭제
                 }
             }
         }
         b.setFile(files);
         int result = new BoardService().updateBoard(b);
 
+        
         String msg = "", loc = "";
         if (result > 0) {
             msg = "게시글이 수정되었습니다.";

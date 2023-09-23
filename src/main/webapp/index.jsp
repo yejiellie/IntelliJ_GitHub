@@ -14,7 +14,6 @@
         </li>
         <li>Spring boot방식으로 게시판 만들기
             <ul>
-                <li>Thymeleaf사용 예정</li>
             </ul>
         </li>
     </ol>
@@ -22,10 +21,8 @@
 </section>
 <a href="hello-servlet">Hello Servlet</a>
 <%
-
     ConnectionTest t = new ConnectionTest();
-    out.println(t.getConnection());
-
+//    out.println(t.getConnection());
 %>
 
 <%@ include file="views/boards/free/common/footer.jsp" %>

@@ -4,6 +4,7 @@ import com.study.servlet.service.BoardService;
 import com.study.vo.Board;
 import com.study.vo.BoardComment;
 import com.study.vo.Category;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+@Slf4j
 @WebServlet("/board/boardDetail.do")
 public class boardDetail extends HttpServlet {
 
@@ -32,6 +33,11 @@ public class boardDetail extends HttpServlet {
         Board b=service.viewDetail(boardNo);
         //댓글
         List<BoardComment> boardComment = service.listComment();
+
+
+        log.info("로그 테스트");
+        log.info(String.valueOf(b));
+
 
         req.setAttribute("categoryList",categoryList);  //카테고리
         req.setAttribute("boardNo",boardNo);
